@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B1–B2 Reading Comprehension – Online Test</title>
+<style>
+  *{box-sizing:border-box;}
+  :root{
+    --bg:#eef2f7;
+    --card:#ffffff;
+    --ink:#1e293b;
+    --muted:#64748b;
+    --line:#e2e8f0;
+    --accent:#2563eb;
+    --accent-soft:#e0edff;
+    --ok:#16a34a;
+    --ok-soft:#e8f7ee;
+    --bad:#dc2626;
+    --bad-soft:#fdeaea;
+  }
+  html,body{height:100%;margin:0;}
+  body{
+    font-family:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+    background:var(--bg);color:var(--ink);
+    display:flex;flex-direction:column;overflow:hidden;
+  }
+
+  /* ---------- TOP BAR ---------- */
+  .topbar{
+    display:flex;align-items:center;justify-content:space-between;gap:14px;
+    padding:10px 18px;background:#fff;border-bottom:1px solid var(--line);
+    box-shadow:0 1px 4px rgba(15,23,42,.05);flex-wrap:wrap;z-index:5;
+  }
+  .brand{display:flex;align-items:center;gap:12px;min-width:0;}
+  .logo{
+    width:38px;height:38px;border-radius:11px;display:grid;place-items:center;
+    background:linear-gradient(135deg,#2563eb,#7c3aed);color:#fff;font-size:19px;flex:none;
+  }
+  .brand h1{font-size:15px;margin:0;letter-spacing:.2px;}
+  .brand p{margin:1px 0 0;font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+
+  .controls{display:flex;align-items:center;gap:9px;flex-wrap:wrap;}
+  select#testSelect{
+    padding:8px 11px;border-radius:9px;border:1px solid var(--line);background:#f8fafc;
+    font-size:13px;font-weight:600;color:var(--ink);cursor:pointer;max-width:280px;
+  }
+  .timer{
+    font-variant-numeric:tabular-nums;font-weight:700;font-size:14px;
+    background:#f1f5f9;border:1px solid var(--line);padding:7px 12px;border-radius:9px;color:#334155;
+  }
+  .timer.warn{background:#fff3cd;border-color:#f0d68a;color:#8a6d1f;}
+  button.btn{
+    padding:8px 16px;border-radius:9px;border:none;font-size:13px;font-weight:700;
+    cursor:pointer;transition:.15s;font-family:inherit;
+  }
+  .btn-primary{background:var(--accent);color:#fff;box-shadow:0 2px 8px rgba(37,99,235,.3);}
+  .btn-primary:hover{background:#1d4ed8;}
+  .btn-ghost{background:#f1f5f9;color:#334155;border:1px solid var(--line);}
+  .btn-ghost:hover{background:#e2e8f0;}
+  .score-box{
+    font-size:13px;font-weight:800;padding:7px 13px;border-radius:9px;
+    background:var(--accent-soft);color:#1d4ed8;display:none;
+  }
+  .score-box.show{display:block;}
+
+  /* ---------- MAIN ---------- */
+  main{
+    flex:1;min-height:0;display:grid;grid-template-columns:1.6fr 1fr;
+    gap:14px;padding:14px;overflow:hidden;
+  }
+  .pane{
+    background:var(--card);border-radius:15px;display:flex;flex-direction:column;
+    min-height:0;overflow:hidden;box-shadow:0 2px 12px rgba(15,23,42,.07);
+    border:1px solid rgba(226,232,240,.9);
+  }
+  .pane-head{
+    display:flex;align-items:center;justify-content:space-between;gap:10px;
+    padding:9px 14px;border-bottom:1px solid var(--line);background:#f8fafc;flex-wrap:wrap;flex:none;
+  }
+  .pane-title{
+    font-size:11.5px;font-weight:800;letter-spacing:1.1px;text-transform:uppercase;color:#475569;
+  }
+  .progress{font-size:12px;font-weight:700;color:var(--accent);background:var(--accent-soft);padding:4px 10px;border-radius:20px;}
+
+  .pane-body{flex:1;overflow-y:auto;padding:20px 24px;scroll-behavior:smooth;}
+  .pane-body::-webkit-scrollbar{width:9px;}
+  .pane-body::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:8px;}
+  .pane-body::-webkit-scrollbar-track{background:transparent;}
+
+  /* ---------- READING ---------- */
+  .tabs{display:flex;gap:6px;flex-wrap:wrap;}
+  .tab{
+    padding:6px 12px;border-radius:8px;border:1px solid var(--line);background:#fff;
+    font-size:12px;font-weight:700;color:#475569;cursor:pointer;font-family:inherit;transition:.15s;
+  }
+  .tab:hover{background:#f1f5f9;}
+  .tab.active{background:var(--accent);border-color:var(--accent);color:#fff;box-shadow:0 2px 8px rgba(37,99,235,.28);}
+
+  .passage-title{
+    font-size:17px;margin:0 0 4px;color:#0f172a;letter-spacing:.2px;
+    padding-bottom:10px;border-bottom:2px solid var(--accent-soft);
+  }
+  .reading p{font-size:15.5px;line-height:1.85;margin:0 0 15px;color:#233047;text-align:justify;}
+  .reading .source{font-size:11.5px;color:#94a3b8;font-style:italic;margin-top:-6px;}
+  .person{background:#f8fafc;border-left:3px solid var(--accent);padding:12px 15px;border-radius:0 9px 9px 0;margin-bottom:13px;}
+  .person h4{margin:0 0 6px;font-size:14.5px;color:#1d4ed8;}
+  .person p{margin:0;font-size:14.5px;line-height:1.72;text-align:left;}
+
+  /* ---------- QUESTIONS ---------- */
+  .section{margin-bottom:26px;}
+  .sec-head{
+    position:sticky;top:-20px;background:#fff;padding:8px 0 8px;z-index:3;
+    border-bottom:1px solid var(--line);margin-bottom:14px;
+  }
+  .sec-head h3{
+    margin:0;font-size:12.5px;letter-spacing:1px;text-transform:uppercase;color:var(--accent);font-weight:800;
+  }
+  .sec-head p{margin:3px 0 0;font-size:12px;color:var(--muted);}
+
+  .hint{
+    background:#f8fafc;border:1px dashed #cbd5e1;border-radius:10px;
+    padding:11px 14px;margin-bottom:14px;font-size:13px;line-height:1.7;color:#334155;
+  }
+  .hint b{color:#1d4ed8;}
+
+  .q{
+    padding:12px 14px;border-radius:12px;border:1px solid var(--line);
+    margin-bottom:11px;transition:.18s;background:#fff;
+  }
+  .q:hover{border-color:#bfd3f5;}
+  .q.correct{background:var(--ok-soft);border-color:#9fdcb6;}
+  .q.wrong{background:var(--bad-soft);border-color:#f3b4b4;}
+  .q-head{display:flex;gap:9px;align-items:flex-start;margin-bottom:9px;}
+  .q-num{
+    flex:none;min-width:24px;height:24px;border-radius:7px;background:#eef2f7;color:#475569;
+    display:grid;place-items:center;font-size:12px;font-weight:800;
+  }
+  .q.correct .q-num{background:var(--ok);color:#fff;}
+  .q.wrong .q-num{background:var(--bad);color:#fff;}
+  .q-text{font-size:14px;line-height:1.55;font-weight:600;color:#1e293b;}
+
+  .opts{display:flex;flex-direction:column;gap:6px;}
+  .opt{
+    display:flex;gap:9px;align-items:flex-start;padding:8px 11px;border-radius:9px;
+    border:1px solid transparent;cursor:pointer;font-size:13.6px;line-height:1.5;transition:.13s;
+  }
+  .opt:hover{background:#f4f7fc;}
+  .opt input{display:none;}
+  .badge{
+    flex:none;width:21px;height:21px;border-radius:6px;background:#eef2f7;color:#64748b;
+    display:grid;place-items:center;font-size:11.5px;font-weight:800;transition:.13s;
+  }
+  .opt:has(input:checked){background:var(--accent-soft);border-color:#b9d4ff;}
+  .opt input:checked ~ .badge{background:var(--accent);color:#fff;}
+  .opt input:checked ~ .opt-text{font-weight:700;color:#1d4ed8;}
+
+  select.sel{
+    width:100%;padding:9px 11px;border-radius:9px;border:1px solid #cbd5e1;
+    font-size:13.5px;font-family:inherit;color:#1e293b;background:#fff;cursor:pointer;
+  }
+  select.sel:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(37,99,235,.14);}
+
+  .input-wrap{display:flex;align-items:center;gap:9px;}
+  input.txt{
+    flex:1;padding:9px 12px;border-radius:9px;border:1px solid #cbd5e1;
+    font-size:13.5px;font-family:inherit;color:#1e293b;
+  }
+  input.txt:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(37,99,235,.14);}
+  .wordlimit{font-size:10.5px;color:#94a3b8;font-weight:700;white-space:nowrap;}
+
+  .q-feedback{margin-top:8px;font-size:12.5px;font-weight:600;display:none;}
+  .q-feedback.show{display:block;}
+  .q.correct .q-feedback{color:var(--ok);}
+  .q.wrong .q-feedback{color:var(--bad);}
+  .q-feedback .explain{display:block;font-weight:500;color:#64748b;margin-top:3px;font-style:italic;}
+
+  /* ---------- MOBILE ---------- */
+  @media(max-width:1000px){
+    html,body{height:auto;overflow:auto;}
+    main{grid-template-columns:1fr;overflow:visible;padding:10px;gap:10px;}
+    .pane{height:70vh;}
+    .pane-body{padding:16px;}
+    .brand p{display:none;}
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <div class="logo">📖</div>
+    <div>
+      <h1>B1–B2 Reading Comprehension</h1>
+      <p id="testSubtitle">30 questions · 60 minutes</p>
+    </div>
+  </div>
+  <div class="controls">
+    <select id="testSelect"></select>
+    <div class="timer" id="timer">00:00</div>
+    <div class="score-box" id="scoreBox"></div>
+    <button class="btn btn-primary" id="submitBtn">Submit</button>
+    <button class="btn btn-ghost" id="resetBtn">Reset</button>
+  </div>
+</header>
+
+<main>
+  <section class="pane">
+    <div class="pane-head">
+      <span class="pane-title">Reading Passage</span>
+      <div class="tabs" id="readingTabs"></div>
+    </div>
+    <div class="pane-body reading" id="readingBody"></div>
+  </section>
+
+  <section class="pane">
+    <div class="pane-head">
+      <span class="pane-title">Answer Sheet</span>
+      <span class="progress" id="progress">0 / 30</span>
+    </div>
+    <div class="pane-body" id="answerBody"></div>
+  </section>
+</main>
+
+<script>
+/* =========================================================
+   DATA
+   ========================================================= */
+const TESTS = [
+/* ---------------------------------------------------------
+   TEST 01
+   --------------------------------------------------------- */
+{
+  id: "t1",
+  name: "TEST 01 – The Changing World of Work",
+  passages: [
+    { label: "Passage 1", title: "PASSAGE 1 – The Changing World of Work", html: `
+      <p>Over the past two decades, the world of work has changed considerably. Technological developments, particularly the growth of the internet and digital communication tools, have transformed how people perform their jobs. In the past, most employees were expected to work in traditional offices, following fixed schedules and meeting their colleagues face to face. Today, however, many companies allow their employees to work remotely, giving them greater flexibility over where and when they complete their tasks.</p>
+      <p>One major advantage of remote working is that employees can save time and money by avoiding daily journeys to the workplace. This can be especially beneficial for people who live far from their offices or have family responsibilities. Furthermore, working from home may create a more comfortable environment, allowing individuals to organise their working hours around personal commitments. Some studies have also suggested that employees who have greater control over their schedules may experience higher levels of job satisfaction.</p>
+      <p>Nevertheless, remote working is not without its challenges. Some employees find it difficult to separate their professional and personal lives when their home becomes their workplace. Without clear boundaries, they may continue answering emails or completing tasks long after their official working hours have ended. In addition, working remotely can reduce opportunities for informal communication. In traditional offices, employees often exchange ideas during lunch breaks or casual conversations, which can contribute to stronger professional relationships.</p>
+      <p>Another concern is the potential effect of remote working on teamwork. Although digital platforms make it possible to communicate across different locations, online meetings cannot always replace face-to-face interaction. Misunderstandings may occur more frequently when people cannot observe body language or immediately clarify what others mean. As a result, managers need to develop effective communication strategies to ensure that all team members remain informed and involved.</p>
+      <p>Rather than completely replacing traditional offices, many experts believe that a combination of remote and office-based work may offer the most practical solution. This approach, commonly known as hybrid working, allows employees to work from home on certain days and attend the office when necessary. It provides flexibility while maintaining opportunities for collaboration. Ultimately, the success of any working arrangement depends on the nature of the job, the needs of employees and the ability of organisations to manage their workforce effectively.</p>
+    `},
+    { label: "Passage 2", title: "PASSAGE 2 – Four People, Four Working Experiences", html: `
+      <p>Four people describe their experiences of different working arrangements.</p>
+      <div class="person"><h4>A. Emily – A Remote Marketing Assistant</h4><p>I have been working from home for almost two years. The greatest advantage is that I no longer spend nearly two hours travelling to the office every day. I can use that time to exercise or prepare meals. However, I sometimes feel isolated because I rarely meet my colleagues in person. To overcome this, I regularly join informal online discussions with my team.</p></div>
+      <div class="person"><h4>B. Daniel – A Hybrid Software Developer</h4><p>My company introduced a hybrid schedule last year. I work from home three days a week and attend the office twice a week. I find this arrangement ideal because I can concentrate on complicated programming tasks at home, while office days give me opportunities to exchange ideas and solve problems with other developers.</p></div>
+      <div class="person"><h4>C. Sophie – A Traditional Office Manager</h4><p>I have worked in a traditional office for more than ten years. I appreciate being able to communicate with my staff directly, especially when urgent decisions need to be made. Although I understand why some people prefer working from home, I believe certain management responsibilities are easier to handle when everyone is physically present.</p></div>
+      <div class="person"><h4>D. Michael – A Freelance Graphic Designer</h4><p>I work independently and choose my own projects. This gives me considerable freedom, but it also means that my income is not always predictable. Some months are financially successful, while others are much quieter. Therefore, I have learned to manage my savings carefully and plan my expenses in advance.</p></div>
+    `},
+    { label: "Passage 3", title: "PASSAGE 3 – Learning New Skills in the Digital Age", html: `
+      <p>The rapid development of technology has created a growing demand for digital skills in the modern workplace. Employees are increasingly expected to use computer software, communicate through online platforms and analyse information effectively. Consequently, learning new skills has become an essential part of professional development.</p>
+      <p>Many organisations now provide online training programmes to help their employees improve their abilities. These programmes often include video lessons, interactive activities and practical assignments. Unlike traditional classroom courses, online training allows participants to study at their own pace and access learning materials from different locations.</p>
+      <p>However, online learning requires a considerable degree of self-discipline. Without a teacher physically present, some learners may struggle to remain motivated or complete their assignments on time. To address this issue, certain organisations introduce weekly deadlines and progress reports. These measures encourage employees to maintain consistent study habits.</p>
+      <p>Another important factor is the practical application of knowledge. Simply watching instructional videos may not be enough to develop professional competence. Employees need opportunities to apply what they have learned to real workplace situations. For instance, someone studying data analysis should practise working with actual datasets rather than only memorising theoretical definitions.</p>
+      <p>Ultimately, continuous learning benefits both individuals and organisations. Employees who regularly update their skills may become more confident and adaptable, while companies can build a workforce that is better prepared for technological changes.</p>
+    `},
+    { label: "Passage 4", title: "PASSAGE 4 – The Importance of Public Libraries", html: `
+      <p>Public libraries have played an important role in communities for centuries. Traditionally, they were mainly places where people could borrow books, read newspapers and access educational materials. Today, however, their responsibilities have expanded considerably.</p>
+      <p>Modern libraries provide a wide range of services beyond lending printed books. Many offer free internet access, computer facilities and digital resources. These services are particularly valuable for people who cannot afford personal computers or reliable internet connections at home. As a result, libraries help reduce the digital divide between different groups in society.</p>
+      <p>Libraries also serve as community centres where people can participate in educational and cultural activities. For example, some organise language classes, reading clubs and workshops for children and adults. Such activities encourage lifelong learning and create opportunities for people to interact with others who share similar interests.</p>
+      <p>Despite these benefits, public libraries face several challenges. One major issue is limited funding, which can make it difficult to purchase new materials, maintain facilities and introduce modern technology. Furthermore, the increasing popularity of online information sources has led some people to question whether traditional libraries are still necessary.</p>
+      <p>Nevertheless, libraries continue to offer something that digital platforms cannot fully replace: a shared physical space for learning, communication and community participation. Their future success will depend on their ability to adapt to changing needs while maintaining their fundamental educational mission.</p>
+    `}
+  ],
+  sections: [
+    {
+      title: "I. Multiple Choice",
+      instruction: "Questions 1–12 · Choose the best answer A, B, C or D.",
+      passage: 0,
+      questions: [
+        { n:1, type:"mc", text:"What is the main idea of the passage?",
+          options:["The internet has made traditional offices unnecessary.","Remote working has changed employment practices, bringing both benefits and challenges.","Employees are more productive when they work from home.","Companies should allow all employees to work remotely."],
+          answer:"B", explain:"The passage discusses both the benefits and the challenges of remote working." },
+        { n:2, type:"mc", text:"Which of the following is the best title for the passage?",
+          options:["Why Traditional Offices Are Becoming Unpopular","The Advantages of Digital Communication","Remote Working: Opportunities and Challenges","The Future of International Business"],
+          answer:"C", explain:"The title covers the overall topic of remote working, including both sides." },
+        { n:3, type:"mc", text:"According to paragraph 2, why can remote working be beneficial to employees?",
+          options:["It guarantees higher salaries.","It allows them to avoid daily travel to work.","It eliminates all professional responsibilities.","It provides more opportunities for promotion."],
+          answer:"B", explain:"Employees save time and money by avoiding daily journeys to the workplace." },
+        { n:4, type:"mc", text:"According to paragraph 3, what problem may employees experience when working from home?",
+          options:["They may find it difficult to maintain boundaries between work and personal life.","They may have fewer technological devices than office workers.","They may be required to work shorter hours.","They may lose access to professional training."],
+          answer:"A", explain:"They may struggle to separate work from personal life." },
+        { n:5, type:"mc", text:"According to paragraph 4, what may happen when employees communicate online?",
+          options:["They always become more productive.","They can understand body language more easily.","Misunderstandings may become more frequent.","They no longer need managers."],
+          answer:"C", explain:"Online communication may lead to misunderstandings." },
+        { n:6, type:"mc", text:"What does the author suggest about hybrid working?",
+          options:["It is only suitable for large international companies.","It combines the advantages of working remotely and in an office.","It requires employees to work from home every day.","It completely removes the need for teamwork."],
+          answer:"B", explain:"Hybrid working combines remote and office-based work." },
+        { n:7, type:"mc", text:"The word “considerably” in paragraph 1 is closest in meaning to ______.",
+          options:["slightly","significantly","unexpectedly","temporarily"],
+          answer:"B", explain:"considerably = significantly (đáng kể)." },
+        { n:8, type:"mc", text:"The word “boundaries” in paragraph 3 is closest in meaning to ______.",
+          options:["limits","opportunities","responsibilities","relationships"],
+          answer:"A", explain:"boundaries = limits (ranh giới, giới hạn)." },
+        { n:9, type:"mc", text:"The phrase “This approach” in paragraph 5 refers to ______.",
+          options:["traditional office-based work","completely remote working","hybrid working","digital communication"],
+          answer:"C", explain:"“This approach” refers to hybrid working." },
+        { n:10, type:"mc", text:"What can be inferred about employees who work remotely without clear working hours?",
+          options:["They may experience increased stress due to difficulties switching off from work.","They are likely to receive better professional training.","They will automatically become more independent.","They usually communicate more effectively with colleagues."],
+          answer:"A", explain:"They may find it difficult to switch off from work." },
+        { n:11, type:"mc", text:"What is the author’s attitude towards remote working?",
+          options:["Completely negative.","Strongly enthusiastic.","Balanced and objective.","Uninterested and dismissive."],
+          answer:"C", explain:"The author presents both advantages and disadvantages." },
+        { n:12, type:"mc", text:"Which statement expresses an opinion rather than a verifiable fact?",
+          options:["Digital communication tools have changed how people perform their jobs.","Some companies allow employees to work remotely.","Hybrid working is the most practical solution for every organisation.","Online meetings may create communication difficulties."],
+          answer:"C", explain:"“The most practical solution for every organisation” is an opinion." }
+      ]
+    },
+    {
+      title: "II. Matching",
+      instruction: "Questions 13–20 · Match each statement with the correct person (A, B, C or D). You may use each letter more than once.",
+      passage: 1,
+      hint: "<b>A</b> – Emily (Remote Marketing Assistant) &nbsp;·&nbsp; <b>B</b> – Daniel (Hybrid Software Developer)<br><b>C</b> – Sophie (Traditional Office Manager) &nbsp;·&nbsp; <b>D</b> – Michael (Freelance Graphic Designer)",
+      questions: [
+        { n:13, type:"select", text:"This person saves considerable time by avoiding daily commuting.", answer:"A",
+          options:[{value:"A",label:"A – Emily"},{value:"B",label:"B – Daniel"},{value:"C",label:"C – Sophie"},{value:"D",label:"D – Michael"}] },
+        { n:14, type:"select", text:"This person values direct communication when making urgent decisions.", answer:"C",
+          options:[{value:"A",label:"A – Emily"},{value:"B",label:"B – Daniel"},{value:"C",label:"C – Sophie"},{value:"D",label:"D – Michael"}] },
+        { n:15, type:"select", text:"This person has to deal with an uncertain monthly income.", answer:"D",
+          options:[{value:"A",label:"A – Emily"},{value:"B",label:"B – Daniel"},{value:"C",label:"C – Sophie"},{value:"D",label:"D – Michael"}] },
+        { n:16, type:"select", text:"This person prefers completing complex tasks in a quiet environment.", answer:"B",
+          options:[{value:"A",label:"A – Emily"},{value:"B",label:"B – Daniel"},{value:"C",label:"C – Sophie"},{value:"D",label:"D – Michael"}] },
+        { n:17, type:"select", text:"This person sometimes experiences a lack of social interaction.", answer:"A",
+          options:[{value:"A",label:"A – Emily"},{value:"B",label:"B – Daniel"},{value:"C",label:"C – Sophie"},{value:"D",label:"D – Michael"}] },
+        { n:18, type:"select", text:"This person believes that managing a team is easier when people are physically present.", answer:"C",
+          options:[{value:"A",label:"A – Emily"},{value:"B",label:"B – Daniel"},{value:"C",label:"C – Sophie"},{value:"D",label:"D – Michael"}] },
+        { n:19, type:"select", text:"This person needs to plan personal finances carefully.", answer:"D",
+          options:[{value:"A",label:"A – Emily"},{value:"B",label:"B – Daniel"},{value:"C",label:"C – Sophie"},{value:"D",label:"D – Michael"}] },
+        { n:20, type:"select", text:"This person divides working time between home and the workplace.", answer:"B",
+          options:[{value:"A",label:"A – Emily"},{value:"B",label:"B – Daniel"},{value:"C",label:"C – Sophie"},{value:"D",label:"D – Michael"}] }
+      ]
+    },
+    {
+      title: "III. Short Answer",
+      instruction: "Questions 21–26 · Answer using NO MORE THAN THREE WORDS from the passage.",
+      passage: 2,
+      questions: [
+        { n:21, type:"text", text:"What has created a growing demand for digital skills?",
+          answers:["technology","technological development","rapid development of technology","the rapid development of technology","development of technology","new technology"] },
+        { n:22, type:"text", text:"What kind of programmes do many organisations provide?",
+          answers:["online training programmes","online training programs","online training","training programmes","online programmes"] },
+        { n:23, type:"text", text:"What do some learners struggle to maintain?",
+          answers:["self-discipline","self discipline","motivation","their motivation"] },
+        { n:24, type:"text", text:"What do certain organisations introduce to encourage consistent study habits?",
+          answers:["weekly deadlines and progress reports","weekly deadlines","progress reports","deadlines and progress reports","deadlines"] },
+        { n:25, type:"text", text:"What should employees apply their knowledge to?",
+          answers:["real workplace situations","workplace situations","real situations","real workplace","their workplace","workplace"] },
+        { n:26, type:"text", text:"What can employees become through regularly updating their skills?",
+          answers:["more confident and adaptable","confident and adaptable","more confident","confident","adaptable"] }
+      ]
+    },
+    {
+      title: "IV. Sentence / Summary Completion",
+      instruction: "Questions 27–30 · Complete using NO MORE THAN THREE WORDS from the passage.",
+      passage: 3,
+      questions: [
+        { n:27, type:"text", text:"Modern libraries provide free internet access, computer facilities and ______.",
+          answers:["digital resources","digital resource"] },
+        { n:28, type:"text", text:"Libraries help reduce the ______ between different groups in society.",
+          answers:["digital divide","the digital divide"] },
+        { n:29, type:"text", text:"Public libraries organise educational activities that encourage ______.",
+          answers:["lifelong learning","learning"] },
+        { n:30, type:"text", text:"However, limited ______ makes it difficult for some libraries to improve their services and facilities.",
+          answers:["funding","limited funding","money"] }
+      ]
+    }
+  ]
+},
+
+/* ---------------------------------------------------------
+   TEST 02
+   --------------------------------------------------------- */
+{
+  id: "t2",
+  name: "TEST 02 – Food Waste · Green Spaces · Repair",
+  passages: [
+    { label: "Passage 1", title: "PASSAGE 1 – Understanding the Problem of Food Waste", html: `
+      <p>Food waste has become a significant environmental and social issue around the world. It occurs at different stages of the food supply chain, including production, transportation, retail and consumption. According to the United Nations Environment Programme (UNEP), approximately 1.05 billion tonnes of food waste were generated worldwide in 2022. This figure includes parts of food that are not normally eaten. The amount represents almost one-fifth of the food available to consumers.</p>
+      <p>Households are responsible for a particularly large proportion of this problem, accounting for approximately 60% of total food waste. One common reason is that people purchase more food than they actually need. Special offers and attractive packaging may encourage customers to buy unnecessary products. In addition, some families prepare excessively large portions or forget about ingredients stored in their refrigerators. Consequently, food may spoil before anyone has the opportunity to consume it.</p>
+      <p>Another source of confusion involves food date labels. Many consumers misunderstand the difference between a “use-by” date and a “best-before” date. A use-by date is generally related to food safety, whereas a best-before date concerns the expected quality of a product. Therefore, food does not automatically become unsafe immediately after its best-before date, although consumers should always consider storage conditions and signs of spoilage before deciding whether to eat it.</p>
+      <p>Fortunately, there are several practical ways to reduce avoidable food waste. Families can check their refrigerators before shopping, prepare weekly meal plans and create shopping lists. Buying only what is necessary and storing food correctly can also make a considerable difference. Furthermore, suitable leftovers can be frozen or used in other meals rather than immediately thrown away. These household habits may seem simple, but they can help prevent large quantities of food from being wasted.</p>
+      <p>Businesses and governments also have important responsibilities. Supermarkets can offer discounts on products approaching their use-by dates, while restaurants can adjust portion sizes to reduce uneaten food. In some situations, safe surplus food can be donated to organisations that support people in need. Governments can collect information about food waste to identify major problem areas and measure progress over time. Ultimately, reducing food waste requires cooperation between consumers, businesses and public authorities rather than relying on individuals alone.</p>
+      <p class="source">Factual background adapted and paraphrased from UNEP’s Food Waste Index Report 2024.</p>
+    `},
+    { label: "Passage 2", title: "PASSAGE 2 – Four Volunteers Making Their Cities Greener", html: `
+      <p>Four young people describe their experiences of participating in environmental projects in their communities.</p>
+      <div class="person"><h4>A. Anna – Community Garden Volunteer</h4><p>I joined a community garden project because I have always been interested in growing vegetables. Every Sunday, I work with other residents to plant, water and harvest different kinds of food. What I enjoy most is the opportunity to teach children how vegetables grow and why locally produced food is important. I believe these activities can encourage younger generations to develop healthier habits.</p></div>
+      <div class="person"><h4>B. Ben – Urban Tree Monitoring Volunteer</h4><p>My project focuses on monitoring trees along city streets. Instead of mainly planting trees, our team records their locations, identifies different species and checks their general condition. We use a smartphone application to collect information and create digital maps. I particularly enjoy working with technology and discovering how environmental data can help local authorities make better decisions.</p></div>
+      <div class="person"><h4>C. Chloe – River Clean-up Volunteer</h4><p>I spend most Saturday mornings participating in river clean-up activities. Our group collects plastic bottles, food packaging and other rubbish along the riverbanks. We also separate recyclable materials from general waste. One of my main concerns is that rubbish may block drainage systems, particularly during periods of heavy rainfall. I hope our work can help make the surrounding environment cleaner and safer.</p></div>
+      <div class="person"><h4>D. Daniel – Rooftop Farming Volunteer</h4><p>I recently joined a rooftop farming programme organised by a local environmental organisation. We maintain vegetable beds on top of a community building and learn how to manage irrigation systems. I am interested in developing a career in landscape management, so this project offers valuable practical experience. It also allows me to understand how unused urban spaces can become productive areas.</p></div>
+    `},
+    { label: "Passage 3", title: "PASSAGE 3 – Why Urban Trees Matter", html: `
+      <p>Urban trees are much more than decorative features in a city. They provide environmental, economic and social benefits that contribute to the quality of life of residents. As cities become more crowded, green spaces are increasingly important for creating healthier and more sustainable living environments.</p>
+      <p>One major benefit of urban trees is their ability to reduce high temperatures. By providing shade, trees cool nearby buildings, roads and other surfaces that would otherwise absorb large amounts of sunlight. This can help reduce the urban heat island effect, a situation in which built-up areas experience higher temperatures than surrounding rural locations. As a result, well-planned tree cover can make certain neighbourhoods more comfortable during hot weather.</p>
+      <p>Trees also help manage water in urban environments. Their leaves and branches intercept and temporarily store rainfall, reducing the amount of water that reaches the ground at one time. Their roots can strengthen soil and help reduce erosion. These functions are particularly useful in areas that experience heavy rainfall and may be vulnerable to flooding or landslides.</p>
+      <p>Another important contribution is the protection of urban biodiversity. Green corridors and urban parks provide habitats and movement routes for different species of plants and animals. Trees can also help absorb certain air pollutants and reduce environmental noise. In addition, parks and green areas offer opportunities for walking, sports, recreation and environmental education. These activities can encourage physical activity and support residents’ physical and psychological well-being.</p>
+      <p>However, simply planting a large number of trees does not guarantee that a city will become environmentally sustainable. Trees must be selected carefully according to local conditions, available space and water resources. Furthermore, they require proper maintenance throughout their lives. Urban planners should work with environmental experts and local residents to identify priorities and ensure that green infrastructure responds to local needs. Effective planning can help cities enjoy the environmental and social benefits of urban trees for many years.</p>
+      <p class="source">Factual background adapted and paraphrased from FAO materials on urban and peri-urban forestry.</p>
+    `},
+    { label: "Passage 4", title: "PASSAGE 4 – Repair, Reuse and the Circular Economy", html: `
+      <p>For many years, people have followed a simple pattern of consumption: buy a product, use it and throw it away when it becomes damaged or outdated. However, this approach creates large amounts of waste and increases the demand for new materials. An alternative is the circular economy, which aims to keep products and resources in use for as long as possible. Repairing, maintaining and reusing existing products are important ways to achieve this goal.</p>
+      <p>Repairing a damaged product can extend its useful lifespan and reduce the consumption of natural resources. For example, repairing a broken chair may be more sustainable than replacing it with a completely new one. Similarly, replacing a small part of an electronic device may allow the entire product to continue functioning. These actions can reduce unnecessary waste and decrease the environmental impact associated with manufacturing new goods.</p>
+      <p>In recent years, community repair events have become a practical way to encourage this behaviour. Sometimes called repair cafés, these events bring together volunteers with different technical abilities and residents who have damaged household items. Participants may bring clothes, bicycles, small electrical appliances or furniture. Volunteers help identify problems and demonstrate simple repair techniques. In the process, residents can develop practical repair skills and share knowledge with other members of the community.</p>
+      <p>Nevertheless, repairing products is not always straightforward. Some items require specialised technical knowledge, while others may be difficult to fix because suitable spare parts are unavailable. In certain cases, the cost of repair may also be higher than the price of purchasing a replacement. For this reason, governments and manufacturers can support the circular economy by improving access to repair information, making spare parts easier to obtain and encouraging the production of durable goods.</p>
+      <p>Ultimately, a successful circular economy requires changes in both consumer behaviour and business practices. Rather than immediately replacing damaged products, people should consider whether repair or reuse is a suitable option. Although these methods cannot solve every environmental problem, they can help reduce waste and encourage more responsible consumption.</p>
+      <p class="source">Factual background adapted and paraphrased from the European Environment Agency’s overview of the repair sector.</p>
+    `}
+  ],
+  sections: [
+    {
+      title: "I. Multiple Choice",
+      instruction: "Questions 1–12 · Choose the best answer A, B, C or D.",
+      passage: 0,
+      questions: [
+        { n:1, type:"mc", text:"What is the main idea of the passage?",
+          options:["Food waste is mainly caused by supermarkets and restaurants.","Food waste is a global problem that requires practical solutions and cooperation.","Food safety regulations are responsible for increasing food waste.","Governments should take complete responsibility for managing food consumption."],
+          answer:"B", explain:"The passage discusses causes of food waste and solutions involving different groups." },
+        { n:2, type:"mc", text:"Which of the following is the best title for the passage?",
+          options:["The Development of the Global Food Industry","How Modern Supermarkets Attract Customers","Food Waste: Causes, Consequences and Solutions","Why Families Should Stop Buying Frozen Food"],
+          answer:"C", explain:"Covers the causes, consequences and solutions of food waste." },
+        { n:3, type:"mc", text:"According to the passage, how much food waste was generated worldwide in 2022?",
+          options:["Approximately 105 million tonnes.","Approximately 1.05 billion tonnes.","Approximately 1.5 billion tonnes.","Approximately 10.5 billion tonnes."],
+          answer:"B", explain:"The passage states approximately 1.05 billion tonnes in 2022." },
+        { n:4, type:"mc", text:"What proportion of total food waste comes from households?",
+          options:["Approximately 20%.","Approximately 40%.","Approximately 60%.","Approximately 80%."],
+          answer:"C", explain:"Households account for approximately 60% of food waste." },
+        { n:5, type:"mc", text:"What is a “use-by” date generally related to?",
+          options:["The expected quality of food.","The nutritional value of food.","The safety of food.","The original production date."],
+          answer:"C", explain:"A use-by date is related to food safety." },
+        { n:6, type:"mc", text:"The word “avoidable” in paragraph 4 is closest in meaning to ______.",
+          options:["preventable","unavoidable","unexpected","unnecessary"],
+          answer:"A", explain:"Avoidable = preventable (có thể ngăn chặn)." },
+        { n:7, type:"mc", text:"The word “surplus” in paragraph 5 is closest in meaning to ______.",
+          options:["damaged","additional","limited","expensive"],
+          answer:"B", explain:"Surplus = additional / extra (dư thừa)." },
+        { n:8, type:"mc", text:"The phrase “These household habits” in paragraph 4 refers to ______.",
+          options:["buying unnecessary products and preparing large portions","checking refrigerators, planning meals and storing food correctly","donating food and collecting information about waste","offering supermarket discounts and changing restaurant menus"],
+          answer:"B", explain:"Refers to checking refrigerators, planning meals and storing food correctly." },
+        { n:9, type:"mc", text:"What can be inferred about food products that have passed their best-before dates?",
+          options:["They must always be thrown away immediately.","They may still be suitable for consumption under appropriate conditions.","They are always dangerous to human health.","They no longer contain any nutritional value."],
+          answer:"B", explain:"Food may remain suitable for consumption depending on storage and condition." },
+        { n:10, type:"mc", text:"What does the passage suggest about successful food waste reduction?",
+          options:["Individual consumers can solve the entire problem without outside support.","Supermarkets should focus exclusively on selling cheaper products.","Different groups need to take action at different stages of the food supply chain.","Governments should concentrate only on collecting food waste statistics."],
+          answer:"C", explain:"Consumers, businesses and governments all have responsibilities." },
+        { n:11, type:"mc", text:"Why did the author write this passage?",
+          options:["To criticise consumers for wasting food.","To describe how supermarkets manage their daily operations.","To explain the food waste problem and introduce practical ways of reducing it.","To persuade readers to stop purchasing packaged food."],
+          answer:"C", explain:"The author explains the problem and introduces practical solutions." },
+        { n:12, type:"mc", text:"Which of the following statements expresses an opinion rather than a verifiable fact?",
+          options:["Approximately 1.05 billion tonnes of food waste were generated worldwide in 2022.","Households account for approximately 60% of total food waste.","Food waste occurs at several stages of the food supply chain.","Preparing a weekly meal plan is the best method for every family to reduce food waste."],
+          answer:"D", explain:"Claiming one method is best for every family is a personal judgement." }
+      ]
+    },
+    {
+      title: "II. Matching",
+      instruction: "Questions 13–20 · Match each statement with the correct person (A, B, C or D). You may use each letter more than once.",
+      passage: 1,
+      hint: "<b>A</b> – Anna (Community Garden) &nbsp;·&nbsp; <b>B</b> – Ben (Urban Tree Monitoring)<br><b>C</b> – Chloe (River Clean-up) &nbsp;·&nbsp; <b>D</b> – Daniel (Rooftop Farming)",
+      questions: [
+        { n:13, type:"select", text:"This person uses digital tools to collect information about trees.", answer:"B",
+          options:[{value:"A",label:"A – Anna"},{value:"B",label:"B – Ben"},{value:"C",label:"C – Chloe"},{value:"D",label:"D – Daniel"}] },
+        { n:14, type:"select", text:"This person regularly participates in activities to remove rubbish from a waterway.", answer:"C",
+          options:[{value:"A",label:"A – Anna"},{value:"B",label:"B – Ben"},{value:"C",label:"C – Chloe"},{value:"D",label:"D – Daniel"}] },
+        { n:15, type:"select", text:"This person wants to gain practical experience for a future professional career.", answer:"D",
+          options:[{value:"A",label:"A – Anna"},{value:"B",label:"B – Ben"},{value:"C",label:"C – Chloe"},{value:"D",label:"D – Daniel"}] },
+        { n:16, type:"select", text:"This person enjoys helping younger people understand food production.", answer:"A",
+          options:[{value:"A",label:"A – Anna"},{value:"B",label:"B – Ben"},{value:"C",label:"C – Chloe"},{value:"D",label:"D – Daniel"}] },
+        { n:17, type:"select", text:"This person is more interested in recording environmental information than planting trees.", answer:"B",
+          options:[{value:"A",label:"A – Anna"},{value:"B",label:"B – Ben"},{value:"C",label:"C – Chloe"},{value:"D",label:"D – Daniel"}] },
+        { n:18, type:"select", text:"This person is concerned about the possible effects of rubbish on drainage systems.", answer:"C",
+          options:[{value:"A",label:"A – Anna"},{value:"B",label:"B – Ben"},{value:"C",label:"C – Chloe"},{value:"D",label:"D – Daniel"}] },
+        { n:19, type:"select", text:"This person wants to grow vegetables together with other local residents.", answer:"A",
+          options:[{value:"A",label:"A – Anna"},{value:"B",label:"B – Ben"},{value:"C",label:"C – Chloe"},{value:"D",label:"D – Daniel"}] },
+        { n:20, type:"select", text:"This person learns how to maintain irrigation systems in an elevated growing area.", answer:"D",
+          options:[{value:"A",label:"A – Anna"},{value:"B",label:"B – Ben"},{value:"C",label:"C – Chloe"},{value:"D",label:"D – Daniel"}] }
+      ]
+    },
+    {
+      title: "III. Short Answer",
+      instruction: "Questions 21–26 · Answer using NO MORE THAN THREE WORDS from the passage.",
+      passage: 2,
+      questions: [
+        { n:21, type:"text", text:"What do urban trees provide to cool nearby buildings and roads?", answers:["shade","the shade"] },
+        { n:22, type:"text", text:"What do tree leaves and branches intercept and temporarily store?", answers:["rainfall","rain","the rainfall"] },
+        { n:23, type:"text", text:"What do green corridors and urban parks help protect?", answers:["urban biodiversity","biodiversity"] },
+        { n:24, type:"text", text:"What can parks encourage through opportunities for walking and sports?", answers:["physical activity","physical activities"] },
+        { n:25, type:"text", text:"What may residents experience in neighbourhoods with few trees and many paved surfaces during hot weather?", answers:["higher temperatures","higher temperature","high temperatures","heat"] },
+        { n:26, type:"text", text:"What should urban green-space planning respond to, according to the passage?", answers:["local needs","the local needs","local need"] }
+      ]
+    },
+    {
+      title: "IV. Sentence / Summary Completion",
+      instruction: "Questions 27–30 · Complete using NO MORE THAN THREE WORDS from the passage.",
+      passage: 3,
+      questions: [
+        { n:27, type:"text", text:"Repairing a damaged product can extend its useful ______.", answers:["lifespan","life span","useful lifespan"] },
+        { n:28, type:"text", text:"One environmental benefit of repairing products is reduced consumption of natural ______.", answers:["resources","natural resources","natural resource"] },
+        { n:29, type:"text", text:"Community repair events allow residents to learn from volunteers and develop practical ______.", answers:["repair skills","skills","practical repair skills"] },
+        { n:30, type:"text", text:"However, some products cannot be repaired easily because suitable ______ are unavailable.", answers:["spare parts","spare part","parts"] }
+      ]
+    }
+  ]
+},
+
+/* ---------------------------------------------------------
+   TEST 03
+   --------------------------------------------------------- */
+{
+  id: "t3",
+  name: "TEST 03 – Travel · Transport · Reefs · Sleep",
+  passages: [
+    { label: "Passage 1", title: "PASSAGE 1 – Rethinking the Way We Travel", html: `
+      <p>Tourism is an important industry in many countries. It creates employment, supports local businesses and gives visitors opportunities to experience different cultures. However, the rapid growth of tourism can also create difficulties, particularly in destinations that receive large numbers of visitors throughout the year.</p>
+      <p>One common problem is overcrowding. When too many tourists visit a popular destination at the same time, public spaces may become crowded and local transport systems may struggle to meet demand. In some places, the cost of accommodation and everyday goods may also increase, making life more expensive for local residents.</p>
+      <p>The natural environment can be affected as well. Beaches may become polluted, wildlife habitats may be disturbed and historic sites may suffer physical damage. These problems can reduce the quality of the visitor experience and make destinations less attractive in the long term.</p>
+      <p>To address these challenges, many organisations promote sustainable tourism. This approach aims to balance three important areas: environmental protection, economic development and respect for local cultures. It does not mean that people should stop travelling. Instead, it encourages tourists, businesses and governments to make more responsible decisions.</p>
+      <p>Individual travellers can contribute in several ways. They can choose locally owned accommodation, purchase products made by local craftspeople and use public transport when possible. They should also respect local customs, avoid leaving rubbish behind and follow instructions when visiting protected natural areas.</p>
+      <p>Tourism companies have responsibilities too. They can employ local workers, reduce unnecessary waste and provide information about responsible behaviour. Governments, meanwhile, need to protect important natural and cultural sites and ensure that local communities benefit from tourism development.</p>
+      <p>Some people believe that sustainable tourism is mainly about protecting the environment. However, this view is incomplete. A destination cannot be considered truly sustainable if its natural attractions are protected but local residents receive few economic benefits or have no influence over important decisions.</p>
+      <p>Ultimately, successful tourism requires cooperation. Visitors should be aware of their impact, businesses should operate responsibly and governments should create effective policies. When these groups work together, tourism can continue to provide benefits without destroying the qualities that make a destination special.</p>
+    `},
+    { label: "Passage 2", title: "PASSAGE 2 – Different Reasons for Using Public Transport", html: `
+      <p>Four people explain why they choose public transport in their daily lives.</p>
+      <div class="person"><h4>Anna</h4><p>“I recently started taking the bus to college because it is more affordable than travelling by motorbike every day. I can use a monthly travel card, which helps me manage my budget. The journey sometimes takes longer, but saving money is important to me.”</p></div>
+      <div class="person"><h4>Brian</h4><p>“I usually travel by train because it is more reliable during rush hour. When I drive, I never know how long I will be stuck in traffic. With the train, I can plan my daily schedule more easily and arrive at work on time.”</p></div>
+      <div class="person"><h4>Carla</h4><p>“The metro is my favourite way to travel because the station is only a few minutes from my office. It is also accessible to people with mobility difficulties because many stations have lifts and clear signs. I find it convenient, especially when I need to travel across the city.”</p></div>
+      <div class="person"><h4>David</h4><p>“I used to drive to work every day, but I changed to public transport because I wanted to reduce my environmental impact. Private vehicles produce emissions that contribute to air pollution. I believe using buses and trains is one practical way to make my daily commute more environmentally friendly.”</p></div>
+    `},
+    { label: "Passage 3", title: "PASSAGE 3 – Understanding Coral Reefs", html: `
+      <p>Coral reefs are among the most diverse ecosystems in the ocean. They provide habitats for thousands of marine species, including fish, sea turtles and other organisms. They are also important to people because they support fishing, tourism and other economic activities. In addition, coral reefs help protect coastlines by reducing the force of waves during storms.</p>
+      <p>Despite their importance, coral reefs face several threats. One of the most serious is rising ocean temperature. When water becomes too warm, corals may experience stress and expel the tiny algae living inside their tissues. This process is known as coral bleaching. Without these algae, corals lose much of their colour and an important source of food.</p>
+      <p>Bleaching does not always mean that corals are dead. If the stressful conditions do not last too long, some corals can recover. However, when high temperatures continue for an extended period, corals may become weak and eventually die.</p>
+      <p>Human activities also contribute to reef damage. Pollution from land can enter the ocean through rivers and rainwater. Unsustainable fishing practices may remove important marine species, while careless visitors can physically damage corals by touching them or stepping on them.</p>
+      <p>Scientists and conservation organisations are working to protect coral reefs. They monitor reef conditions, study coral health and develop restoration projects. Local communities can also help by reducing pollution, following responsible diving practices and supporting marine protection programmes.</p>
+      <p>Although global climate change remains a major threat, reducing local sources of damage can improve the ability of coral reefs to survive stressful conditions. Protecting these ecosystems requires long-term cooperation between governments, scientists, businesses and local residents.</p>
+    `},
+    { label: "Passage 4", title: "PASSAGE 4 – Sleep and the Learning Process", html: `
+      <p>Many students believe that studying for longer hours is the best way to prepare for examinations. Some even stay awake late at night to review lessons, hoping to remember more information. However, sleep plays an important role in learning and should not be treated as wasted time.</p>
+      <p>During the day, the brain receives and processes a large amount of information. While people sleep, the brain continues working. Certain stages of sleep help organise newly learned information and form memories. This process allows some information to become more stable and easier to recall later.</p>
+      <p>Sleep is also closely connected to concentration. Students who do not get enough sleep may find it difficult to pay attention in class, understand complicated ideas or make decisions. Even if they spend many hours studying, their performance may be affected by tiredness.</p>
+      <p>Developing healthy sleeping habits can improve the quality of sleep. For example, going to bed and waking up at regular times helps establish a consistent routine. Students should also reduce their caffeine consumption in the evening and avoid using electronic devices immediately before bedtime.</p>
+      <p>The amount of sleep required can vary depending on a person’s age and individual needs. Therefore, there is no single sleeping schedule that works perfectly for everyone. Nevertheless, getting sufficient sleep, studying regularly and taking suitable breaks can help students learn more effectively.</p>
+    `}
+  ],
+  sections: [
+    {
+      title: "I. Multiple Choice",
+      instruction: "Questions 1–12 · Choose the best answer A, B, C or D.",
+      passage: 0,
+      questions: [
+        { n:1, type:"mc", text:"What is the main idea of the passage?",
+          options:["Tourism should be developed without any restrictions.","Sustainable tourism requires responsible actions from different groups.","International tourists are responsible for most environmental problems.","Governments should focus mainly on increasing tourist numbers."],
+          answer:"B", explain:"The passage emphasises the responsibility of multiple parties in sustainable tourism." },
+        { n:2, type:"mc", text:"Which is the best title for the passage?",
+          options:["The History of International Travel","Why Tourists Prefer Popular Destinations","Sustainable Tourism: Benefits and Responsibilities","The Economic Problems of Developing Countries"],
+          answer:"C", explain:"Covers sustainable tourism, its benefits and responsibilities." },
+        { n:3, type:"mc", text:"According to the passage, what may happen when too many tourists visit a destination?",
+          options:["Local transport systems may become overloaded.","Local residents may receive higher salaries.","Accommodation prices may become cheaper.","Historic sites may become easier to maintain."],
+          answer:"A", explain:"Too many visitors can overload local transport systems." },
+        { n:4, type:"mc", text:"Which of the following is mentioned as a way tourists can support local communities?",
+          options:["Staying in international hotel chains","Avoiding traditional cultural activities","Buying products made by local craftspeople","Visiting protected areas without restrictions"],
+          answer:"C", explain:"Tourists can buy products made by local craftspeople." },
+        { n:5, type:"mc", text:"What should governments do to promote sustainable tourism?",
+          options:["Encourage visitors to avoid public transport.","Protect natural and cultural sites.","Prevent local businesses from employing tourists.","Focus only on increasing the number of visitors."],
+          answer:"B", explain:"Governments need to protect natural and cultural sites." },
+        { n:6, type:"mc", text:"The word “overcrowding” in paragraph 2 is closest in meaning to:",
+          options:["a lack of public services","a situation with too many people in one place","a shortage of accommodation","a reduction in the number of visitors"],
+          answer:"B", explain:"Overcrowding = a situation with too many people in one place." },
+        { n:7, type:"mc", text:"The word “influence” in paragraph 7 is closest in meaning to:",
+          options:["control or affect decisions","refuse to accept changes","avoid taking responsibility","provide financial support"],
+          answer:"A", explain:"Influence = affect or have control over decisions." },
+        { n:8, type:"mc", text:"The phrase “These problems” in paragraph 3 refers to:",
+          options:["employment and economic development","the cost of accommodation and transport","pollution, habitat disturbance and damage to historic sites","the lack of information for international tourists"],
+          answer:"C", explain:"Refers to pollution, habitat disturbance and damage to historic sites." },
+        { n:9, type:"mc", text:"What can be inferred from paragraph 7?",
+          options:["Environmental protection alone is not enough to make tourism sustainable.","Local residents are usually against tourism development.","Economic development is more important than cultural protection.","Sustainable tourism is only suitable for small destinations."],
+          answer:"A", explain:"Sustainable tourism must also consider local communities, not only the environment." },
+        { n:10, type:"mc", text:"What does the writer suggest about individual travellers?",
+          options:["Their actions have no meaningful effect on tourism.","They should leave all environmental responsibilities to governments.","Their choices can contribute to more responsible tourism.","They should avoid travelling to popular destinations."],
+          answer:"C", explain:"Individual choices can contribute to more responsible tourism." },
+        { n:11, type:"mc", text:"What is the writer’s main purpose?",
+          options:["To persuade readers to visit a particular country","To explain sustainable tourism and the responsibilities involved","To compare the prices of different travel services","To describe the history of the tourism industry"],
+          answer:"B", explain:"The author explains sustainable tourism and the responsibilities involved." },
+        { n:12, type:"mc", text:"Which statement expresses an opinion rather than a directly stated fact?",
+          options:["Tourism creates employment in many countries.","Tourists can use public transport when possible.","Governments need to protect important cultural sites.","Cooperation is the most effective way to guarantee successful tourism."],
+          answer:"D", explain:"This is the author’s evaluative judgement, not a directly stated fact." }
+      ]
+    },
+    {
+      title: "II. Matching – Part A: Vocabulary",
+      instruction: "Questions 13–16 · Match each word with its correct definition.",
+      passage: 1,
+      hint: "<b>A</b> – Easy to reach, enter or use<br><b>B</b> – Not costing too much money<br><b>C</b> – Able to be trusted or depended on<br><b>D</b> – To travel regularly between home and work or school",
+      questions: [
+        { n:13, type:"select", text:"Affordable", answer:"B",
+          options:[{value:"A",label:"A – Easy to reach, enter or use"},{value:"B",label:"B – Not costing too much money"},{value:"C",label:"C – Able to be trusted or depended on"},{value:"D",label:"D – To travel regularly between home and work or school"}] },
+        { n:14, type:"select", text:"Reliable", answer:"C",
+          options:[{value:"A",label:"A – Easy to reach, enter or use"},{value:"B",label:"B – Not costing too much money"},{value:"C",label:"C – Able to be trusted or depended on"},{value:"D",label:"D – To travel regularly between home and work or school"}] },
+        { n:15, type:"select", text:"Accessible", answer:"A",
+          options:[{value:"A",label:"A – Easy to reach, enter or use"},{value:"B",label:"B – Not costing too much money"},{value:"C",label:"C – Able to be trusted or depended on"},{value:"D",label:"D – To travel regularly between home and work or school"}] },
+        { n:16, type:"select", text:"Commute", answer:"D",
+          options:[{value:"A",label:"A – Easy to reach, enter or use"},{value:"B",label:"B – Not costing too much money"},{value:"C",label:"C – Able to be trusted or depended on"},{value:"D",label:"D – To travel regularly between home and work or school"}] }
+      ]
+    },
+    {
+      title: "II. Matching – Part B: Information",
+      instruction: "Questions 17–20 · Match each statement with the correct person.",
+      passage: 1,
+      hint: "<b>Anna</b> &nbsp;·&nbsp; <b>Brian</b> &nbsp;·&nbsp; <b>Carla</b> &nbsp;·&nbsp; <b>David</b>",
+      questions: [
+        { n:17, type:"select", text:"This person chooses public transport mainly to save money.", answer:"Anna",
+          options:[{value:"Anna",label:"Anna"},{value:"Brian",label:"Brian"},{value:"Carla",label:"Carla"},{value:"David",label:"David"}] },
+        { n:18, type:"select", text:"This person prefers a transport system that helps avoid unpredictable delays.", answer:"Brian",
+          options:[{value:"Anna",label:"Anna"},{value:"Brian",label:"Brian"},{value:"Carla",label:"Carla"},{value:"David",label:"David"}] },
+        { n:19, type:"select", text:"This person values facilities that make public transport easier for people with mobility difficulties.", answer:"Carla",
+          options:[{value:"Anna",label:"Anna"},{value:"Brian",label:"Brian"},{value:"Carla",label:"Carla"},{value:"David",label:"David"}] },
+        { n:20, type:"select", text:"This person wants to reduce pollution caused by daily travel.", answer:"David",
+          options:[{value:"Anna",label:"Anna"},{value:"Brian",label:"Brian"},{value:"Carla",label:"Carla"},{value:"David",label:"David"}] }
+      ]
+    },
+    {
+      title: "III. Short Answer",
+      instruction: "Questions 21–26 · Answer using NO MORE THAN THREE WORDS from the passage.",
+      passage: 2,
+      questions: [
+        { n:21, type:"text", text:"What do coral reefs help protect?", answers:["coastlines","coastline","the coastlines","the coastline"] },
+        { n:22, type:"text", text:"What do corals expel from their tissues during bleaching?", answers:["tiny algae","algae","the tiny algae"] },
+        { n:23, type:"text", text:"What may happen to corals if high temperatures continue for a long time?", answers:["become weak","weak","weaken","they become weak","die"] },
+        { n:24, type:"text", text:"What can enter the ocean through rivers and rainwater?", answers:["pollution","land pollution"] },
+        { n:25, type:"text", text:"What do scientists monitor to understand the condition of coral reefs?", answers:["reef conditions","conditions","reef condition","coral conditions"] },
+        { n:26, type:"text", text:"What can local communities support to help protect marine environments?", answers:["marine protection programmes","marine protection programs","marine protection programme","protection programmes","marine programmes"] }
+      ]
+    },
+    {
+      title: "IV. Sentence Completion",
+      instruction: "Questions 27–30 · Complete using NO MORE THAN THREE WORDS from the passage.",
+      passage: 3,
+      questions: [
+        { n:27, type:"text", text:"During sleep, the brain helps organise newly learned information and form ______.", answers:["memories","memory"] },
+        { n:28, type:"text", text:"Students who lack sleep may have difficulty paying ______ in class.", answers:["attention","pay attention"] },
+        { n:29, type:"text", text:"Going to bed and waking up at regular times helps establish a consistent ______.", answers:["routine","consistent routine","a routine"] },
+        { n:30, type:"text", text:"Students should reduce their ______ in the evening.", answers:["caffeine consumption","caffeine","caffeine intake"] }
+      ]
+    }
+  ]
+}
+];
+
+/* =========================================================
+   STATE
+   ========================================================= */
+const STORAGE_KEY = "b1b2_reading_app_v1";
+const testSelect   = document.getElementById("testSelect");
+const timerEl      = document.getElementById("timer");
+const scoreBox     = document.getElementById("scoreBox");
+const submitBtn    = document.getElementById("submitBtn");
+const resetBtn     = document.getElementById("resetBtn");
+const readingTabs  = document.getElementById("readingTabs");
+const readingBody  = document.getElementById("readingBody");
+const answerBody   = document.getElementById("answerBody");
+const progressEl   = document.getElementById("progress");
+const subtitleEl   = document.getElementById("testSubtitle");
+
+let currentTest   = null;
+let activePassage = 0;
+let answers       = {};
+let submitted     = false;
+let elapsed       = 0;
+let timerHandle   = null;
+
+/* =========================================================
+   STORAGE
+   ========================================================= */
+function loadStore(){
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}"); }
+  catch(e){ return {}; }
+}
+function saveStore(){
+  if(!currentTest) return;
+  try {
+    const data = loadStore();
+    data[currentTest.id] = { answers, submitted };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  } catch(e){}
+}
+
+/* =========================================================
+   HELPERS
+   ========================================================= */
+function norm(s){
+  return String(s || "")
+    .toLowerCase()
+    .replace(/[.,;:!?"'’‘“”()\[\]\-–—/]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+function totalQuestions(){
+  return currentTest.sections.reduce((a,s)=>a+s.questions.length,0);
+}
+
+/* =========================================================
+   TIMER
+   ========================================================= */
+function startTimer(){
+  clearInterval(timerHandle);
+  renderTimer();
+  timerHandle = setInterval(()=>{
+    elapsed++;
+    renderTimer();
+  }, 1000);
+}
+function renderTimer(){
+  const m = String(Math.floor(elapsed/60)).padStart(2,"0");
+  const s = String(elapsed%60).padStart(2,"0");
+  timerEl.textContent = `${m}:${s}`;
+  timerEl.classList.toggle("warn", elapsed >= 60*60);
+}
+
+/* =========================================================
+   RENDER: TEST LIST
+   ========================================================= */
+TESTS.forEach(t=>{
+  const o = document.createElement("option");
+  o.value = t.id;
+  o.textContent = t.name;
+  testSelect.appendChild(o);
+});
+
+/* =========================================================
+   RENDER: READING
+   ========================================================= */
+function buildTabs(){
+  readingTabs.innerHTML = "";
+  currentTest.passages.forEach((p, i)=>{
+    const b = document.createElement("button");
+    b.className = "tab" + (i === activePassage ? " active" : "");
+    b.textContent = p.label;
+    b.addEventListener("click", ()=>selectPassage(i));
+    readingTabs.appendChild(b);
+  });
+}
+function selectPassage(i){
+  if(i === activePassage) return;
+  activePassage = i;
+  renderReading();
+  [...readingTabs.children].forEach((b, idx)=>b.classList.toggle("active", idx === i));
+}
+function renderReading(){
+  const p = currentTest.passages[activePassage];
+  readingBody.innerHTML = `<h2 class="passage-title">${p.title}</h2>` + p.html;
+  readingBody.scrollTop = 0;
+}
+
+/* =========================================================
+   RENDER: ANSWER SHEET
+   ========================================================= */
+function buildQuestion(q, sec){
+  const el = document.createElement("div");
+  el.className = "q";
+  el.dataset.n = q.n;
+  el.dataset.passage = sec.passage;
+
+  let inner = `<div class="q-head"><span class="q-num">${q.n}</span><span class="q-text">${q.text}</span></div>`;
+
+  if(q.type === "mc"){
+    inner += `<div class="opts">` + q.options.map((t, i)=>{
+      const L = "ABCD"[i];
+      return `<label class="opt">
+        <input type="radio" name="q${q.n}" value="${L}">
+        <span class="badge">${L}</span>
+        <span class="opt-text">${t}</span>
+      </label>`;
+    }).join("") + `</div>`;
+  } else if(q.type === "select"){
+    inner += `<div class="select-wrap"><select class="sel" data-n="${q.n}">
+      <option value="">— choose an answer —</option>` +
+      q.options.map(o=>`<option value="${o.value}">${o.label}</option>`).join("") +
+      `</select></div>`;
+  } else {
+    inner += `<div class="input-wrap">
+      <input type="text" class="txt" data-n="${q.n}" autocomplete="off" spellcheck="false" placeholder="Type your answer…">
+      <span class="wordlimit">≤ 3 words</span>
+    </div>`;
+  }
+
+  inner += `<div class="q-feedback"></div>`;
+  el.innerHTML = inner;
+  return el;
+}
+
+function renderAnswers(){
+  answerBody.innerHTML = "";
+  currentTest.sections.forEach(sec=>{
+    const secEl = document.createElement("section");
+    secEl.className = "section";
+
+    const head = document.createElement("div");
+    head.className = "sec-head";
+    head.innerHTML = `<h3>${sec.title}</h3><p>${sec.instruction || ""}</p>`;
+    secEl.appendChild(head);
+
+    if(sec.hint){
+      const h = document.createElement("div");
+      h.className = "hint";
+      h.innerHTML = sec.hint;
+      secEl.appendChild(h);
+    }
+
+    sec.questions.forEach(q => secEl.appendChild(buildQuestion(q, sec)));
+    answerBody.appendChild(secEl);
+  });
+
+  restoreAnswers();
+  updateProgress();
+  scoreBox.classList.remove("show");
+}
+
+function restoreAnswers(){
+  answerBody.querySelectorAll('input[type="radio"]').forEach(r=> r.checked = false);
+  answerBody.querySelectorAll("select.sel").forEach(s=> s.value = "");
+  answerBody.querySelectorAll("input.txt").forEach(i=> i.value = "");
+  answerBody.querySelectorAll(".q").forEach(q=>{
+    q.classList.remove("correct","wrong");
+    const fb = q.querySelector(".q-feedback");
+    fb.className = "q-feedback";
+    fb.innerHTML = "";
+  });
+
+  Object.entries(answers).forEach(([n, v])=>{
+    if(!v) return;
+    const radios = answerBody.querySelectorAll(`input[name="q${n}"]`);
+    if(radios.length){
+      radios.forEach(r=>{ if(r.value === v) r.checked = true; });
+      return;
+    }
+    const sel = answerBody.querySelector(`select.sel[data-n="${n}"]`);
+    if(sel){ sel.value = v; return; }
+    const txt = answerBody.querySelector(`input.txt[data-n="${n}"]`);
+    if(txt) txt.value = v;
+  });
+
+  if(submitted) grade(true);
+}
+
+/* =========================================================
+   ANSWERS / PROGRESS
+   ========================================================= */
+function setAnswer(n, v){
+  answers[n] = v;
+  clearMark(n);
+  updateProgress();
+  saveStore();
+}
+function clearMark(n){
+  const el = answerBody.querySelector(`.q[data-n="${n}"]`);
+  if(!el) return;
+  el.classList.remove("correct","wrong");
+  const fb = el.querySelector(".q-feedback");
+  if(fb){ fb.className = "q-feedback"; fb.innerHTML = ""; }
+}
+function updateProgress(){
+  let done = 0;
+  currentTest.sections.forEach(sec=>sec.questions.forEach(q=>{
+    if((answers[q.n] || "").trim()) done++;
+  }));
+  progressEl.textContent = `${done} / ${totalQuestions()}`;
+}
+
+/* =========================================================
+   EVENTS ON ANSWER SHEET
+   ========================================================= */
+answerBody.addEventListener("input", e=>{
+  const t = e.target;
+  if(t.classList.contains("txt")) setAnswer(t.dataset.n, t.value);
+});
+
+answerBody.addEventListener("change", e=>{
+  const t = e.target;
+  if(t.type === "radio" && t.name.startsWith("q")){
+    setAnswer(t.name.slice(1), t.value);
+  }
+  if(t.classList.contains("sel")){
+    setAnswer(t.dataset.n, t.value);
+  }
+});
+
+/* auto-switch reading passage when user interacts with a question */
+function focusQuestion(e){
+  const q = e.target.closest(".q");
+  if(!q) return;
+  const p = Number(q.dataset.passage);
+  if(!Number.isNaN(p) && p !== activePassage){
+    selectPassage(p);
+  }
+}
+answerBody.addEventListener("focusin", focusQuestion);
+answerBody.addEventListener("click", focusQuestion);
+
+/* =========================================================
+   GRADING
+   ========================================================= */
+function grade(silent){
+  let score = 0;
+  let total = 0;
+
+  currentTest.sections.forEach(sec=>{
+    sec.questions.forEach(q=>{
+      total++;
+      const raw = (answers[q.n] || "").trim();
+      let ok = false;
+      let correctText = "";
+
+      if(q.type === "mc"){
+        const idx = "ABCD".indexOf(q.answer);
+        correctText = `${q.answer} – ${q.options[idx]}`;
+        ok = raw === q.answer;
+      } else if(q.type === "select"){
+        const opt = q.options.find(o=>o.value === q.answer);
+        correctText = opt ? opt.label : q.answer;
+        ok = raw === q.answer;
+      } else {
+        correctText = q.answers[0];
+        const nr = norm(raw);
+        ok = !!nr && q.answers.some(a => norm(a) === nr);
+      }
+
+      if(ok) score++;
+
+      const el = answerBody.querySelector(`.q[data-n="${q.n}"]`);
+      if(!el) return;
+      el.classList.toggle("correct", ok);
+      el.classList.toggle("wrong", !ok);
+
+      const fb = el.querySelector(".q-feedback");
+      fb.className = "q-feedback show";
+      if(ok){
+        fb.innerHTML = `✓ Correct` + (q.explain ? `<span class="explain">${q.explain}</span>` : "");
+      } else {
+        fb.innerHTML = `✗ Correct answer: <b>${correctText}</b>` +
+          (q.explain ? `<span class="explain">${q.explain}</span>` : "");
+      }
+    });
+  });
+
+  submitted = true;
+  saveStore();
+
+  const pct = Math.round(score / total * 100);
+  scoreBox.textContent = `Score: ${score}/${total} (${pct}%)`;
+  scoreBox.classList.add("show");
+
+  if(!silent){
+    answerBody.scrollTo({ top: 0, behavior: "smooth" });
+  }
+}
+
+/* =========================================================
+   TEST LOADING
+   ========================================================= */
+function loadTest(id){
+  currentTest = TESTS.find(t => t.id === id) || TESTS[0];
+  testSelect.value = currentTest.id;
+
+  const saved = loadStore()[currentTest.id];
+  answers   = (saved && saved.answers) ? {...saved.answers} : {};
+  submitted = false;
+
+  activePassage = 0;
+  buildTabs();
+  renderReading();
+  renderAnswers();
+
+  elapsed = 0;
+  startTimer();
+
+  subtitleEl.textContent = `${currentTest.name} · 30 questions · 60 minutes`;
+}
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+testSelect.addEventListener("change", e => loadTest(e.target.value));
+
+submitBtn.addEventListener("click", ()=>{
+  const unanswered = totalQuestions() - Object.values(answers).filter(v => (v||"").trim()).length;
+  if(unanswered > 0){
+    const ok = confirm(`You still have ${unanswered} unanswered question(s). Submit anyway?`);
+    if(!ok) return;
+  }
+  grade(false);
+});
+
+resetBtn.addEventListener("click", ()=>{
+  if(!confirm("Clear all answers for this test?")) return;
+  answers = {};
+  submitted = false;
+  elapsed = 0;
+  saveStore();
+  renderAnswers();
+  renderTimer();
+  scoreBox.classList.remove("show");
+});
+
+/* =========================================================
+   INIT
+   ========================================================= */
+loadTest(TESTS[0].id);
+</script>
+</body>
+</html>
