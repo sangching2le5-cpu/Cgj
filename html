@@ -2,1009 +2,1027 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>B1–B2 Reading Comprehension – Online Test</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>NA021 — Advanced Grammar Practice</title>
 <style>
-  *{box-sizing:border-box;}
-  :root{
-    --bg:#eef2f7;
-    --card:#ffffff;
-    --ink:#1e293b;
-    --muted:#64748b;
-    --line:#e2e8f0;
-    --accent:#2563eb;
-    --accent-soft:#e0edff;
-    --ok:#16a34a;
-    --ok-soft:#e8f7ee;
-    --bad:#dc2626;
-    --bad-soft:#fdeaea;
-  }
-  html,body{height:100%;margin:0;}
-  body{
-    font-family:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
-    background:var(--bg);color:var(--ink);
-    display:flex;flex-direction:column;overflow:hidden;
-  }
-
-  /* ---------- TOP BAR ---------- */
-  .topbar{
-    display:flex;align-items:center;justify-content:space-between;gap:14px;
-    padding:10px 18px;background:#fff;border-bottom:1px solid var(--line);
-    box-shadow:0 1px 4px rgba(15,23,42,.05);flex-wrap:wrap;z-index:5;
-  }
-  .brand{display:flex;align-items:center;gap:12px;min-width:0;}
-  .logo{
-    width:38px;height:38px;border-radius:11px;display:grid;place-items:center;
-    background:linear-gradient(135deg,#2563eb,#7c3aed);color:#fff;font-size:19px;flex:none;
-  }
-  .brand h1{font-size:15px;margin:0;letter-spacing:.2px;}
-  .brand p{margin:1px 0 0;font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-
-  .controls{display:flex;align-items:center;gap:9px;flex-wrap:wrap;}
-  select#testSelect{
-    padding:8px 11px;border-radius:9px;border:1px solid var(--line);background:#f8fafc;
-    font-size:13px;font-weight:600;color:var(--ink);cursor:pointer;max-width:280px;
-  }
-  .timer{
-    font-variant-numeric:tabular-nums;font-weight:700;font-size:14px;
-    background:#f1f5f9;border:1px solid var(--line);padding:7px 12px;border-radius:9px;color:#334155;
-  }
-  .timer.warn{background:#fff3cd;border-color:#f0d68a;color:#8a6d1f;}
-  button.btn{
-    padding:8px 16px;border-radius:9px;border:none;font-size:13px;font-weight:700;
-    cursor:pointer;transition:.15s;font-family:inherit;
-  }
-  .btn-primary{background:var(--accent);color:#fff;box-shadow:0 2px 8px rgba(37,99,235,.3);}
-  .btn-primary:hover{background:#1d4ed8;}
-  .btn-ghost{background:#f1f5f9;color:#334155;border:1px solid var(--line);}
-  .btn-ghost:hover{background:#e2e8f0;}
-  .score-box{
-    font-size:13px;font-weight:800;padding:7px 13px;border-radius:9px;
-    background:var(--accent-soft);color:#1d4ed8;display:none;
-  }
-  .score-box.show{display:block;}
-
-  /* ---------- MAIN ---------- */
-  main{
-    flex:1;min-height:0;display:grid;grid-template-columns:1.6fr 1fr;
-    gap:14px;padding:14px;overflow:hidden;
-  }
-  .pane{
-    background:var(--card);border-radius:15px;display:flex;flex-direction:column;
-    min-height:0;overflow:hidden;box-shadow:0 2px 12px rgba(15,23,42,.07);
-    border:1px solid rgba(226,232,240,.9);
-  }
-  .pane-head{
-    display:flex;align-items:center;justify-content:space-between;gap:10px;
-    padding:9px 14px;border-bottom:1px solid var(--line);background:#f8fafc;flex-wrap:wrap;flex:none;
-  }
-  .pane-title{
-    font-size:11.5px;font-weight:800;letter-spacing:1.1px;text-transform:uppercase;color:#475569;
-  }
-  .progress{font-size:12px;font-weight:700;color:var(--accent);background:var(--accent-soft);padding:4px 10px;border-radius:20px;}
-
-  .pane-body{flex:1;overflow-y:auto;padding:20px 24px;scroll-behavior:smooth;}
-  .pane-body::-webkit-scrollbar{width:9px;}
-  .pane-body::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:8px;}
-  .pane-body::-webkit-scrollbar-track{background:transparent;}
-
-  /* ---------- READING ---------- */
-  .tabs{display:flex;gap:6px;flex-wrap:wrap;}
-  .tab{
-    padding:6px 12px;border-radius:8px;border:1px solid var(--line);background:#fff;
-    font-size:12px;font-weight:700;color:#475569;cursor:pointer;font-family:inherit;transition:.15s;
-  }
-  .tab:hover{background:#f1f5f9;}
-  .tab.active{background:var(--accent);border-color:var(--accent);color:#fff;box-shadow:0 2px 8px rgba(37,99,235,.28);}
-
-  .passage-title{
-    font-size:17px;margin:0 0 4px;color:#0f172a;letter-spacing:.2px;
-    padding-bottom:10px;border-bottom:2px solid var(--accent-soft);
-  }
-  .reading p{font-size:15.5px;line-height:1.85;margin:0 0 15px;color:#233047;text-align:justify;}
-  .reading .source{font-size:11.5px;color:#94a3b8;font-style:italic;margin-top:-6px;}
-  .person{background:#f8fafc;border-left:3px solid var(--accent);padding:12px 15px;border-radius:0 9px 9px 0;margin-bottom:13px;}
-  .person h4{margin:0 0 6px;font-size:14.5px;color:#1d4ed8;}
-  .person p{margin:0;font-size:14.5px;line-height:1.72;text-align:left;}
-
-  /* ---------- QUESTIONS ---------- */
-  .section{margin-bottom:26px;}
-  .sec-head{
-    position:sticky;top:-20px;background:#fff;padding:8px 0 8px;z-index:3;
-    border-bottom:1px solid var(--line);margin-bottom:14px;
-  }
-  .sec-head h3{
-    margin:0;font-size:12.5px;letter-spacing:1px;text-transform:uppercase;color:var(--accent);font-weight:800;
-  }
-  .sec-head p{margin:3px 0 0;font-size:12px;color:var(--muted);}
-
-  .hint{
-    background:#f8fafc;border:1px dashed #cbd5e1;border-radius:10px;
-    padding:11px 14px;margin-bottom:14px;font-size:13px;line-height:1.7;color:#334155;
-  }
-  .hint b{color:#1d4ed8;}
-
-  .q{
-    padding:12px 14px;border-radius:12px;border:1px solid var(--line);
-    margin-bottom:11px;transition:.18s;background:#fff;
-  }
-  .q:hover{border-color:#bfd3f5;}
-  .q.correct{background:var(--ok-soft);border-color:#9fdcb6;}
-  .q.wrong{background:var(--bad-soft);border-color:#f3b4b4;}
-  .q-head{display:flex;gap:9px;align-items:flex-start;margin-bottom:9px;}
-  .q-num{
-    flex:none;min-width:24px;height:24px;border-radius:7px;background:#eef2f7;color:#475569;
-    display:grid;place-items:center;font-size:12px;font-weight:800;
-  }
-  .q.correct .q-num{background:var(--ok);color:#fff;}
-  .q.wrong .q-num{background:var(--bad);color:#fff;}
-  .q-text{font-size:14px;line-height:1.55;font-weight:600;color:#1e293b;}
-
-  .opts{display:flex;flex-direction:column;gap:6px;}
-  .opt{
-    display:flex;gap:9px;align-items:flex-start;padding:8px 11px;border-radius:9px;
-    border:1px solid transparent;cursor:pointer;font-size:13.6px;line-height:1.5;transition:.13s;
-  }
-  .opt:hover{background:#f4f7fc;}
-  .opt input{display:none;}
-  .badge{
-    flex:none;width:21px;height:21px;border-radius:6px;background:#eef2f7;color:#64748b;
-    display:grid;place-items:center;font-size:11.5px;font-weight:800;transition:.13s;
-  }
-  .opt:has(input:checked){background:var(--accent-soft);border-color:#b9d4ff;}
-  .opt input:checked ~ .badge{background:var(--accent);color:#fff;}
-  .opt input:checked ~ .opt-text{font-weight:700;color:#1d4ed8;}
-
-  select.sel{
-    width:100%;padding:9px 11px;border-radius:9px;border:1px solid #cbd5e1;
-    font-size:13.5px;font-family:inherit;color:#1e293b;background:#fff;cursor:pointer;
-  }
-  select.sel:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(37,99,235,.14);}
-
-  .input-wrap{display:flex;align-items:center;gap:9px;}
-  input.txt{
-    flex:1;padding:9px 12px;border-radius:9px;border:1px solid #cbd5e1;
-    font-size:13.5px;font-family:inherit;color:#1e293b;
-  }
-  input.txt:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(37,99,235,.14);}
-  .wordlimit{font-size:10.5px;color:#94a3b8;font-weight:700;white-space:nowrap;}
-
-  .q-feedback{margin-top:8px;font-size:12.5px;font-weight:600;display:none;}
-  .q-feedback.show{display:block;}
-  .q.correct .q-feedback{color:var(--ok);}
-  .q.wrong .q-feedback{color:var(--bad);}
-  .q-feedback .explain{display:block;font-weight:500;color:#64748b;margin-top:3px;font-style:italic;}
-
-  /* ---------- MOBILE ---------- */
-  @media(max-width:1000px){
-    html,body{height:auto;overflow:auto;}
-    main{grid-template-columns:1fr;overflow:visible;padding:10px;gap:10px;}
-    .pane{height:70vh;}
-    .pane-body{padding:16px;}
-    .brand p{display:none;}
-  }
+:root{--bg:#F4F8FC;--pr:#6C9FD6;--lt:#E6F1FB;--wh:#FFF;--tx:#243447;--su:#4CAF80;--er:#E57373;--bd:#D5E3F0;--rd:12px}
+*{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif}
+body{background:var(--bg);color:var(--tx);min-height:100vh;font-size:15px;line-height:1.5}
+#app{display:flex;min-height:100vh}
+#sidebar{width:230px;background:var(--wh);padding:20px 14px;box-shadow:2px 0 10px rgba(108,159,214,.06);position:fixed;height:100vh;overflow-y:auto}
+#main{margin-left:230px;padding:24px;flex:1;max-width:1180px}
+#sidebar .brand{color:var(--pr);font-size:15px;font-weight:700;margin-bottom:18px;padding-left:8px}
+nav a{display:block;padding:10px 12px;margin:3px 0;border-radius:8px;color:var(--tx);text-decoration:none;font-size:14px;cursor:pointer;transition:background .15s}
+nav a:hover,nav a.active{background:var(--lt);color:var(--pr);font-weight:500}
+h1{font-size:23px;margin-bottom:6px;color:var(--tx)}
+h2{font-size:17px;margin:20px 0 12px;color:var(--tx)}
+h3{font-size:15px;margin-bottom:8px}
+.sub{color:#7A8BA1;font-size:13px;margin-bottom:18px}
+.card{background:var(--wh);border-radius:var(--rd);padding:20px;box-shadow:0 2px 10px rgba(108,159,214,.08);margin-bottom:16px}
+.grid{display:grid;gap:14px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(170px,1fr))}
+.g4{grid-template-columns:repeat(auto-fit,minmax(140px,1fr))}
+.stat{text-align:center;padding:14px 8px;background:var(--wh);border-radius:var(--rd);box-shadow:0 2px 8px rgba(108,159,214,.06)}
+.stat-v{font-size:26px;font-weight:700;color:var(--pr);line-height:1.2}
+.stat-l{font-size:12px;color:#7A8BA1;margin-top:4px}
+button{padding:10px 18px;background:var(--pr);color:#fff;border:none;border-radius:8px;font-size:14px;cursor:pointer;font-weight:500;transition:background .15s}
+button:hover{background:#5A8FC6}
+button.sec{background:var(--lt);color:var(--pr)}
+button.sec:hover{background:#D2E3F5}
+button.dan{background:var(--er)}
+button.dan:hover{background:#D65C5C}
+button.sm{padding:6px 12px;font-size:13px}
+button:disabled{opacity:.5;cursor:not-allowed}
+.option{display:block;width:100%;text-align:left;padding:13px 16px;margin:8px 0;background:var(--wh);border:2px solid var(--bd);border-radius:10px;cursor:pointer;font-size:15px;color:var(--tx);transition:all .12s;font-weight:400}
+.option:hover{border-color:var(--pr);background:var(--lt)}
+.option.sel{border-color:var(--pr);background:var(--lt);font-weight:500}
+.option.cor{border-color:var(--su);background:#E8F5EE}
+.option.wr{border-color:var(--er);background:#FDEDED}
+.progress{height:8px;background:var(--lt);border-radius:4px;overflow:hidden;margin:10px 0}
+.pbar{height:100%;background:var(--pr);transition:width .3s}
+.ng{display:grid;grid-template-columns:repeat(8,1fr);gap:6px;margin:12px 0}
+.nb{padding:8px 4px;border:1px solid var(--bd);border-radius:6px;background:var(--wh);cursor:pointer;font-size:12px;text-align:center;color:var(--tx);font-weight:500}
+.nb.ans{background:var(--lt);border-color:var(--pr);color:var(--pr)}
+.nb.cur{background:var(--pr);color:#fff;border-color:var(--pr)}
+.nb.rc{background:#E8F5EE;border-color:var(--su);color:var(--su)}
+.nb.rw{background:#FDEDED;border-color:var(--er);color:var(--er)}
+.qt{font-size:16px;line-height:1.6;margin:14px 0;padding:16px;background:var(--lt);border-radius:10px}
+.exp{background:#FFF9E6;padding:13px;border-radius:8px;margin-top:12px;font-size:13px;line-height:1.55;border-left:3px solid #F5C542}
+.tc{cursor:pointer;transition:transform .12s,box-shadow .12s;display:flex;flex-direction:column;gap:8px}
+.tc:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(108,159,214,.15)}
+.bdg{display:inline-block;padding:2px 9px;border-radius:12px;font-size:11px;font-weight:600;margin-right:4px}
+.bdg-A2{background:#E8F5EE;color:#3D8B62}
+.bdg-B1{background:#FFF4D6;color:#B5860A}
+.bdg-B2{background:#FFE8E8;color:#C44}
+.fb{padding:6px 14px;background:var(--wh);border:1px solid var(--bd);border-radius:16px;font-size:13px;cursor:pointer;color:var(--tx);font-weight:400}
+.fb.act{background:var(--pr);color:#fff;border-color:var(--pr)}
+.fb:hover:not(.act){background:var(--lt)}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between}
+.mt{margin-top:16px}
+.center{text-align:center}
+.timer{font-family:monospace;font-size:16px;font-weight:700;padding:6px 14px;background:var(--lt);color:var(--pr);border-radius:8px}
+.timer.warn{background:#FDEDED;color:var(--er)}
+.tiny{font-size:12px;color:#7A8BA1}
+.topic-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--bd);gap:12px;flex-wrap:wrap}
+.topic-row:last-child{border-bottom:none}
+@media(max-width:768px){
+  #app{flex-direction:column}
+  #sidebar{position:static;width:100%;height:auto;padding:12px;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+  #sidebar .brand{margin-bottom:10px}
+  #sidebar nav{display:flex;flex-wrap:wrap;gap:4px}
+  #sidebar nav a{padding:7px 11px;font-size:12.5px}
+  #main{margin-left:0;padding:14px}
+  h1{font-size:19px}
+  .ng{grid-template-columns:repeat(5,1fr)}
+  .stat-v{font-size:22px}
+}
 </style>
 </head>
 <body>
-
-<header class="topbar">
-  <div class="brand">
-    <div class="logo">📖</div>
-    <div>
-      <h1>B1–B2 Reading Comprehension</h1>
-      <p id="testSubtitle">30 questions · 60 minutes</p>
-    </div>
-  </div>
-  <div class="controls">
-    <select id="testSelect"></select>
-    <div class="timer" id="timer">00:00</div>
-    <div class="score-box" id="scoreBox"></div>
-    <button class="btn btn-primary" id="submitBtn">Submit</button>
-    <button class="btn btn-ghost" id="resetBtn">Reset</button>
-  </div>
-</header>
-
-<main>
-  <section class="pane">
-    <div class="pane-head">
-      <span class="pane-title">Reading Passage</span>
-      <div class="tabs" id="readingTabs"></div>
-    </div>
-    <div class="pane-body reading" id="readingBody"></div>
-  </section>
-
-  <section class="pane">
-    <div class="pane-head">
-      <span class="pane-title">Answer Sheet</span>
-      <span class="progress" id="progress">0 / 30</span>
-    </div>
-    <div class="pane-body" id="answerBody"></div>
-  </section>
-</main>
-
+<div id="app">
+  <aside id="sidebar">
+    <div class="brand">📚 NA021 Grammar</div>
+    <nav id="nav"></nav>
+  </aside>
+  <main id="main"></main>
+</div>
 <script>
 /* =========================================================
-   DATA
+   TOPIC DEFINITIONS
    ========================================================= */
-const TESTS = [
-/* ---------------------------------------------------------
-   TEST 01
-   --------------------------------------------------------- */
-{
-  id: "t1",
-  name: "TEST 01 – The Changing World of Work",
-  passages: [
-    { label: "Passage 1", title: "PASSAGE 1 – The Changing World of Work", html: `
-      <p>Over the past two decades, the world of work has changed considerably. Technological developments, particularly the growth of the internet and digital communication tools, have transformed how people perform their jobs. In the past, most employees were expected to work in traditional offices, following fixed schedules and meeting their colleagues face to face. Today, however, many companies allow their employees to work remotely, giving them greater flexibility over where and when they complete their tasks.</p>
-      <p>One major advantage of remote working is that employees can save time and money by avoiding daily journeys to the workplace. This can be especially beneficial for people who live far from their offices or have family responsibilities. Furthermore, working from home may create a more comfortable environment, allowing individuals to organise their working hours around personal commitments. Some studies have also suggested that employees who have greater control over their schedules may experience higher levels of job satisfaction.</p>
-      <p>Nevertheless, remote working is not without its challenges. Some employees find it difficult to separate their professional and personal lives when their home becomes their workplace. Without clear boundaries, they may continue answering emails or completing tasks long after their official working hours have ended. In addition, working remotely can reduce opportunities for informal communication. In traditional offices, employees often exchange ideas during lunch breaks or casual conversations, which can contribute to stronger professional relationships.</p>
-      <p>Another concern is the potential effect of remote working on teamwork. Although digital platforms make it possible to communicate across different locations, online meetings cannot always replace face-to-face interaction. Misunderstandings may occur more frequently when people cannot observe body language or immediately clarify what others mean. As a result, managers need to develop effective communication strategies to ensure that all team members remain informed and involved.</p>
-      <p>Rather than completely replacing traditional offices, many experts believe that a combination of remote and office-based work may offer the most practical solution. This approach, commonly known as hybrid working, allows employees to work from home on certain days and attend the office when necessary. It provides flexibility while maintaining opportunities for collaboration. Ultimately, the success of any working arrangement depends on the nature of the job, the needs of employees and the ability of organisations to manage their workforce effectively.</p>
-    `},
-    { label: "Passage 2", title: "PASSAGE 2 – Four People, Four Working Experiences", html: `
-      <p>Four people describe their experiences of different working arrangements.</p>
-      <div class="person"><h4>A. Emily – A Remote Marketing Assistant</h4><p>I have been working from home for almost two years. The greatest advantage is that I no longer spend nearly two hours travelling to the office every day. I can use that time to exercise or prepare meals. However, I sometimes feel isolated because I rarely meet my colleagues in person. To overcome this, I regularly join informal online discussions with my team.</p></div>
-      <div class="person"><h4>B. Daniel – A Hybrid Software Developer</h4><p>My company introduced a hybrid schedule last year. I work from home three days a week and attend the office twice a week. I find this arrangement ideal because I can concentrate on complicated programming tasks at home, while office days give me opportunities to exchange ideas and solve problems with other developers.</p></div>
-      <div class="person"><h4>C. Sophie – A Traditional Office Manager</h4><p>I have worked in a traditional office for more than ten years. I appreciate being able to communicate with my staff directly, especially when urgent decisions need to be made. Although I understand why some people prefer working from home, I believe certain management responsibilities are easier to handle when everyone is physically present.</p></div>
-      <div class="person"><h4>D. Michael – A Freelance Graphic Designer</h4><p>I work independently and choose my own projects. This gives me considerable freedom, but it also means that my income is not always predictable. Some months are financially successful, while others are much quieter. Therefore, I have learned to manage my savings carefully and plan my expenses in advance.</p></div>
-    `},
-    { label: "Passage 3", title: "PASSAGE 3 – Learning New Skills in the Digital Age", html: `
-      <p>The rapid development of technology has created a growing demand for digital skills in the modern workplace. Employees are increasingly expected to use computer software, communicate through online platforms and analyse information effectively. Consequently, learning new skills has become an essential part of professional development.</p>
-      <p>Many organisations now provide online training programmes to help their employees improve their abilities. These programmes often include video lessons, interactive activities and practical assignments. Unlike traditional classroom courses, online training allows participants to study at their own pace and access learning materials from different locations.</p>
-      <p>However, online learning requires a considerable degree of self-discipline. Without a teacher physically present, some learners may struggle to remain motivated or complete their assignments on time. To address this issue, certain organisations introduce weekly deadlines and progress reports. These measures encourage employees to maintain consistent study habits.</p>
-      <p>Another important factor is the practical application of knowledge. Simply watching instructional videos may not be enough to develop professional competence. Employees need opportunities to apply what they have learned to real workplace situations. For instance, someone studying data analysis should practise working with actual datasets rather than only memorising theoretical definitions.</p>
-      <p>Ultimately, continuous learning benefits both individuals and organisations. Employees who regularly update their skills may become more confident and adaptable, while companies can build a workforce that is better prepared for technological changes.</p>
-    `},
-    { label: "Passage 4", title: "PASSAGE 4 – The Importance of Public Libraries", html: `
-      <p>Public libraries have played an important role in communities for centuries. Traditionally, they were mainly places where people could borrow books, read newspapers and access educational materials. Today, however, their responsibilities have expanded considerably.</p>
-      <p>Modern libraries provide a wide range of services beyond lending printed books. Many offer free internet access, computer facilities and digital resources. These services are particularly valuable for people who cannot afford personal computers or reliable internet connections at home. As a result, libraries help reduce the digital divide between different groups in society.</p>
-      <p>Libraries also serve as community centres where people can participate in educational and cultural activities. For example, some organise language classes, reading clubs and workshops for children and adults. Such activities encourage lifelong learning and create opportunities for people to interact with others who share similar interests.</p>
-      <p>Despite these benefits, public libraries face several challenges. One major issue is limited funding, which can make it difficult to purchase new materials, maintain facilities and introduce modern technology. Furthermore, the increasing popularity of online information sources has led some people to question whether traditional libraries are still necessary.</p>
-      <p>Nevertheless, libraries continue to offer something that digital platforms cannot fully replace: a shared physical space for learning, communication and community participation. Their future success will depend on their ability to adapt to changing needs while maintaining their fundamental educational mission.</p>
-    `}
-  ],
-  sections: [
-    {
-      title: "I. Multiple Choice",
-      instruction: "Questions 1–12 · Choose the best answer A, B, C or D.",
-      passage: 0,
-      questions: [
-        { n:1, type:"mc", text:"What is the main idea of the passage?",
-          options:["The internet has made traditional offices unnecessary.","Remote working has changed employment practices, bringing both benefits and challenges.","Employees are more productive when they work from home.","Companies should allow all employees to work remotely."],
-          answer:"B", explain:"The passage discusses both the benefits and the challenges of remote working." },
-        { n:2, type:"mc", text:"Which of the following is the best title for the passage?",
-          options:["Why Traditional Offices Are Becoming Unpopular","The Advantages of Digital Communication","Remote Working: Opportunities and Challenges","The Future of International Business"],
-          answer:"C", explain:"The title covers the overall topic of remote working, including both sides." },
-        { n:3, type:"mc", text:"According to paragraph 2, why can remote working be beneficial to employees?",
-          options:["It guarantees higher salaries.","It allows them to avoid daily travel to work.","It eliminates all professional responsibilities.","It provides more opportunities for promotion."],
-          answer:"B", explain:"Employees save time and money by avoiding daily journeys to the workplace." },
-        { n:4, type:"mc", text:"According to paragraph 3, what problem may employees experience when working from home?",
-          options:["They may find it difficult to maintain boundaries between work and personal life.","They may have fewer technological devices than office workers.","They may be required to work shorter hours.","They may lose access to professional training."],
-          answer:"A", explain:"They may struggle to separate work from personal life." },
-        { n:5, type:"mc", text:"According to paragraph 4, what may happen when employees communicate online?",
-          options:["They always become more productive.","They can understand body language more easily.","Misunderstandings may become more frequent.","They no longer need managers."],
-          answer:"C", explain:"Online communication may lead to misunderstandings." },
-        { n:6, type:"mc", text:"What does the author suggest about hybrid working?",
-          options:["It is only suitable for large international companies.","It combines the advantages of working remotely and in an office.","It requires employees to work from home every day.","It completely removes the need for teamwork."],
-          answer:"B", explain:"Hybrid working combines remote and office-based work." },
-        { n:7, type:"mc", text:"The word “considerably” in paragraph 1 is closest in meaning to ______.",
-          options:["slightly","significantly","unexpectedly","temporarily"],
-          answer:"B", explain:"considerably = significantly (đáng kể)." },
-        { n:8, type:"mc", text:"The word “boundaries” in paragraph 3 is closest in meaning to ______.",
-          options:["limits","opportunities","responsibilities","relationships"],
-          answer:"A", explain:"boundaries = limits (ranh giới, giới hạn)." },
-        { n:9, type:"mc", text:"The phrase “This approach” in paragraph 5 refers to ______.",
-          options:["traditional office-based work","completely remote working","hybrid working","digital communication"],
-          answer:"C", explain:"“This approach” refers to hybrid working." },
-        { n:10, type:"mc", text:"What can be inferred about employees who work remotely without clear working hours?",
-          options:["They may experience increased stress due to difficulties switching off from work.","They are likely to receive better professional training.","They will automatically become more independent.","They usually communicate more effectively with colleagues."],
-          answer:"A", explain:"They may find it difficult to switch off from work." },
-        { n:11, type:"mc", text:"What is the author’s attitude towards remote working?",
-          options:["Completely negative.","Strongly enthusiastic.","Balanced and objective.","Uninterested and dismissive."],
-          answer:"C", explain:"The author presents both advantages and disadvantages." },
-        { n:12, type:"mc", text:"Which statement expresses an opinion rather than a verifiable fact?",
-          options:["Digital communication tools have changed how people perform their jobs.","Some companies allow employees to work remotely.","Hybrid working is the most practical solution for every organisation.","Online meetings may create communication difficulties."],
-          answer:"C", explain:"“The most practical solution for every organisation” is an opinion." }
-      ]
-    },
-    {
-      title: "II. Matching",
-      instruction: "Questions 13–20 · Match each statement with the correct person (A, B, C or D). You may use each letter more than once.",
-      passage: 1,
-      hint: "<b>A</b> – Emily (Remote Marketing Assistant) &nbsp;·&nbsp; <b>B</b> – Daniel (Hybrid Software Developer)<br><b>C</b> – Sophie (Traditional Office Manager) &nbsp;·&nbsp; <b>D</b> – Michael (Freelance Graphic Designer)",
-      questions: [
-        { n:13, type:"select", text:"This person saves considerable time by avoiding daily commuting.", answer:"A",
-          options:[{value:"A",label:"A – Emily"},{value:"B",label:"B – Daniel"},{value:"C",label:"C – Sophie"},{value:"D",label:"D – Michael"}] },
-        { n:14, type:"select", text:"This person values direct communication when making urgent decisions.", answer:"C",
-          options:[{value:"A",label:"A – Emily"},{value:"B",label:"B – Daniel"},{value:"C",label:"C – Sophie"},{value:"D",label:"D – Michael"}] },
-        { n:15, type:"select", text:"This person has to deal with an uncertain monthly income.", answer:"D",
-          options:[{value:"A",label:"A – Emily"},{value:"B",label:"B – Daniel"},{value:"C",label:"C – Sophie"},{value:"D",label:"D – Michael"}] },
-        { n:16, type:"select", text:"This person prefers completing complex tasks in a quiet environment.", answer:"B",
-          options:[{value:"A",label:"A – Emily"},{value:"B",label:"B – Daniel"},{value:"C",label:"C – Sophie"},{value:"D",label:"D – Michael"}] },
-        { n:17, type:"select", text:"This person sometimes experiences a lack of social interaction.", answer:"A",
-          options:[{value:"A",label:"A – Emily"},{value:"B",label:"B – Daniel"},{value:"C",label:"C – Sophie"},{value:"D",label:"D – Michael"}] },
-        { n:18, type:"select", text:"This person believes that managing a team is easier when people are physically present.", answer:"C",
-          options:[{value:"A",label:"A – Emily"},{value:"B",label:"B – Daniel"},{value:"C",label:"C – Sophie"},{value:"D",label:"D – Michael"}] },
-        { n:19, type:"select", text:"This person needs to plan personal finances carefully.", answer:"D",
-          options:[{value:"A",label:"A – Emily"},{value:"B",label:"B – Daniel"},{value:"C",label:"C – Sophie"},{value:"D",label:"D – Michael"}] },
-        { n:20, type:"select", text:"This person divides working time between home and the workplace.", answer:"B",
-          options:[{value:"A",label:"A – Emily"},{value:"B",label:"B – Daniel"},{value:"C",label:"C – Sophie"},{value:"D",label:"D – Michael"}] }
-      ]
-    },
-    {
-      title: "III. Short Answer",
-      instruction: "Questions 21–26 · Answer using NO MORE THAN THREE WORDS from the passage.",
-      passage: 2,
-      questions: [
-        { n:21, type:"text", text:"What has created a growing demand for digital skills?",
-          answers:["technology","technological development","rapid development of technology","the rapid development of technology","development of technology","new technology"] },
-        { n:22, type:"text", text:"What kind of programmes do many organisations provide?",
-          answers:["online training programmes","online training programs","online training","training programmes","online programmes"] },
-        { n:23, type:"text", text:"What do some learners struggle to maintain?",
-          answers:["self-discipline","self discipline","motivation","their motivation"] },
-        { n:24, type:"text", text:"What do certain organisations introduce to encourage consistent study habits?",
-          answers:["weekly deadlines and progress reports","weekly deadlines","progress reports","deadlines and progress reports","deadlines"] },
-        { n:25, type:"text", text:"What should employees apply their knowledge to?",
-          answers:["real workplace situations","workplace situations","real situations","real workplace","their workplace","workplace"] },
-        { n:26, type:"text", text:"What can employees become through regularly updating their skills?",
-          answers:["more confident and adaptable","confident and adaptable","more confident","confident","adaptable"] }
-      ]
-    },
-    {
-      title: "IV. Sentence / Summary Completion",
-      instruction: "Questions 27–30 · Complete using NO MORE THAN THREE WORDS from the passage.",
-      passage: 3,
-      questions: [
-        { n:27, type:"text", text:"Modern libraries provide free internet access, computer facilities and ______.",
-          answers:["digital resources","digital resource"] },
-        { n:28, type:"text", text:"Libraries help reduce the ______ between different groups in society.",
-          answers:["digital divide","the digital divide"] },
-        { n:29, type:"text", text:"Public libraries organise educational activities that encourage ______.",
-          answers:["lifelong learning","learning"] },
-        { n:30, type:"text", text:"However, limited ______ makes it difficult for some libraries to improve their services and facilities.",
-          answers:["funding","limited funding","money"] }
-      ]
-    }
-  ]
-},
-
-/* ---------------------------------------------------------
-   TEST 02
-   --------------------------------------------------------- */
-{
-  id: "t2",
-  name: "TEST 02 – Food Waste · Green Spaces · Repair",
-  passages: [
-    { label: "Passage 1", title: "PASSAGE 1 – Understanding the Problem of Food Waste", html: `
-      <p>Food waste has become a significant environmental and social issue around the world. It occurs at different stages of the food supply chain, including production, transportation, retail and consumption. According to the United Nations Environment Programme (UNEP), approximately 1.05 billion tonnes of food waste were generated worldwide in 2022. This figure includes parts of food that are not normally eaten. The amount represents almost one-fifth of the food available to consumers.</p>
-      <p>Households are responsible for a particularly large proportion of this problem, accounting for approximately 60% of total food waste. One common reason is that people purchase more food than they actually need. Special offers and attractive packaging may encourage customers to buy unnecessary products. In addition, some families prepare excessively large portions or forget about ingredients stored in their refrigerators. Consequently, food may spoil before anyone has the opportunity to consume it.</p>
-      <p>Another source of confusion involves food date labels. Many consumers misunderstand the difference between a “use-by” date and a “best-before” date. A use-by date is generally related to food safety, whereas a best-before date concerns the expected quality of a product. Therefore, food does not automatically become unsafe immediately after its best-before date, although consumers should always consider storage conditions and signs of spoilage before deciding whether to eat it.</p>
-      <p>Fortunately, there are several practical ways to reduce avoidable food waste. Families can check their refrigerators before shopping, prepare weekly meal plans and create shopping lists. Buying only what is necessary and storing food correctly can also make a considerable difference. Furthermore, suitable leftovers can be frozen or used in other meals rather than immediately thrown away. These household habits may seem simple, but they can help prevent large quantities of food from being wasted.</p>
-      <p>Businesses and governments also have important responsibilities. Supermarkets can offer discounts on products approaching their use-by dates, while restaurants can adjust portion sizes to reduce uneaten food. In some situations, safe surplus food can be donated to organisations that support people in need. Governments can collect information about food waste to identify major problem areas and measure progress over time. Ultimately, reducing food waste requires cooperation between consumers, businesses and public authorities rather than relying on individuals alone.</p>
-      <p class="source">Factual background adapted and paraphrased from UNEP’s Food Waste Index Report 2024.</p>
-    `},
-    { label: "Passage 2", title: "PASSAGE 2 – Four Volunteers Making Their Cities Greener", html: `
-      <p>Four young people describe their experiences of participating in environmental projects in their communities.</p>
-      <div class="person"><h4>A. Anna – Community Garden Volunteer</h4><p>I joined a community garden project because I have always been interested in growing vegetables. Every Sunday, I work with other residents to plant, water and harvest different kinds of food. What I enjoy most is the opportunity to teach children how vegetables grow and why locally produced food is important. I believe these activities can encourage younger generations to develop healthier habits.</p></div>
-      <div class="person"><h4>B. Ben – Urban Tree Monitoring Volunteer</h4><p>My project focuses on monitoring trees along city streets. Instead of mainly planting trees, our team records their locations, identifies different species and checks their general condition. We use a smartphone application to collect information and create digital maps. I particularly enjoy working with technology and discovering how environmental data can help local authorities make better decisions.</p></div>
-      <div class="person"><h4>C. Chloe – River Clean-up Volunteer</h4><p>I spend most Saturday mornings participating in river clean-up activities. Our group collects plastic bottles, food packaging and other rubbish along the riverbanks. We also separate recyclable materials from general waste. One of my main concerns is that rubbish may block drainage systems, particularly during periods of heavy rainfall. I hope our work can help make the surrounding environment cleaner and safer.</p></div>
-      <div class="person"><h4>D. Daniel – Rooftop Farming Volunteer</h4><p>I recently joined a rooftop farming programme organised by a local environmental organisation. We maintain vegetable beds on top of a community building and learn how to manage irrigation systems. I am interested in developing a career in landscape management, so this project offers valuable practical experience. It also allows me to understand how unused urban spaces can become productive areas.</p></div>
-    `},
-    { label: "Passage 3", title: "PASSAGE 3 – Why Urban Trees Matter", html: `
-      <p>Urban trees are much more than decorative features in a city. They provide environmental, economic and social benefits that contribute to the quality of life of residents. As cities become more crowded, green spaces are increasingly important for creating healthier and more sustainable living environments.</p>
-      <p>One major benefit of urban trees is their ability to reduce high temperatures. By providing shade, trees cool nearby buildings, roads and other surfaces that would otherwise absorb large amounts of sunlight. This can help reduce the urban heat island effect, a situation in which built-up areas experience higher temperatures than surrounding rural locations. As a result, well-planned tree cover can make certain neighbourhoods more comfortable during hot weather.</p>
-      <p>Trees also help manage water in urban environments. Their leaves and branches intercept and temporarily store rainfall, reducing the amount of water that reaches the ground at one time. Their roots can strengthen soil and help reduce erosion. These functions are particularly useful in areas that experience heavy rainfall and may be vulnerable to flooding or landslides.</p>
-      <p>Another important contribution is the protection of urban biodiversity. Green corridors and urban parks provide habitats and movement routes for different species of plants and animals. Trees can also help absorb certain air pollutants and reduce environmental noise. In addition, parks and green areas offer opportunities for walking, sports, recreation and environmental education. These activities can encourage physical activity and support residents’ physical and psychological well-being.</p>
-      <p>However, simply planting a large number of trees does not guarantee that a city will become environmentally sustainable. Trees must be selected carefully according to local conditions, available space and water resources. Furthermore, they require proper maintenance throughout their lives. Urban planners should work with environmental experts and local residents to identify priorities and ensure that green infrastructure responds to local needs. Effective planning can help cities enjoy the environmental and social benefits of urban trees for many years.</p>
-      <p class="source">Factual background adapted and paraphrased from FAO materials on urban and peri-urban forestry.</p>
-    `},
-    { label: "Passage 4", title: "PASSAGE 4 – Repair, Reuse and the Circular Economy", html: `
-      <p>For many years, people have followed a simple pattern of consumption: buy a product, use it and throw it away when it becomes damaged or outdated. However, this approach creates large amounts of waste and increases the demand for new materials. An alternative is the circular economy, which aims to keep products and resources in use for as long as possible. Repairing, maintaining and reusing existing products are important ways to achieve this goal.</p>
-      <p>Repairing a damaged product can extend its useful lifespan and reduce the consumption of natural resources. For example, repairing a broken chair may be more sustainable than replacing it with a completely new one. Similarly, replacing a small part of an electronic device may allow the entire product to continue functioning. These actions can reduce unnecessary waste and decrease the environmental impact associated with manufacturing new goods.</p>
-      <p>In recent years, community repair events have become a practical way to encourage this behaviour. Sometimes called repair cafés, these events bring together volunteers with different technical abilities and residents who have damaged household items. Participants may bring clothes, bicycles, small electrical appliances or furniture. Volunteers help identify problems and demonstrate simple repair techniques. In the process, residents can develop practical repair skills and share knowledge with other members of the community.</p>
-      <p>Nevertheless, repairing products is not always straightforward. Some items require specialised technical knowledge, while others may be difficult to fix because suitable spare parts are unavailable. In certain cases, the cost of repair may also be higher than the price of purchasing a replacement. For this reason, governments and manufacturers can support the circular economy by improving access to repair information, making spare parts easier to obtain and encouraging the production of durable goods.</p>
-      <p>Ultimately, a successful circular economy requires changes in both consumer behaviour and business practices. Rather than immediately replacing damaged products, people should consider whether repair or reuse is a suitable option. Although these methods cannot solve every environmental problem, they can help reduce waste and encourage more responsible consumption.</p>
-      <p class="source">Factual background adapted and paraphrased from the European Environment Agency’s overview of the repair sector.</p>
-    `}
-  ],
-  sections: [
-    {
-      title: "I. Multiple Choice",
-      instruction: "Questions 1–12 · Choose the best answer A, B, C or D.",
-      passage: 0,
-      questions: [
-        { n:1, type:"mc", text:"What is the main idea of the passage?",
-          options:["Food waste is mainly caused by supermarkets and restaurants.","Food waste is a global problem that requires practical solutions and cooperation.","Food safety regulations are responsible for increasing food waste.","Governments should take complete responsibility for managing food consumption."],
-          answer:"B", explain:"The passage discusses causes of food waste and solutions involving different groups." },
-        { n:2, type:"mc", text:"Which of the following is the best title for the passage?",
-          options:["The Development of the Global Food Industry","How Modern Supermarkets Attract Customers","Food Waste: Causes, Consequences and Solutions","Why Families Should Stop Buying Frozen Food"],
-          answer:"C", explain:"Covers the causes, consequences and solutions of food waste." },
-        { n:3, type:"mc", text:"According to the passage, how much food waste was generated worldwide in 2022?",
-          options:["Approximately 105 million tonnes.","Approximately 1.05 billion tonnes.","Approximately 1.5 billion tonnes.","Approximately 10.5 billion tonnes."],
-          answer:"B", explain:"The passage states approximately 1.05 billion tonnes in 2022." },
-        { n:4, type:"mc", text:"What proportion of total food waste comes from households?",
-          options:["Approximately 20%.","Approximately 40%.","Approximately 60%.","Approximately 80%."],
-          answer:"C", explain:"Households account for approximately 60% of food waste." },
-        { n:5, type:"mc", text:"What is a “use-by” date generally related to?",
-          options:["The expected quality of food.","The nutritional value of food.","The safety of food.","The original production date."],
-          answer:"C", explain:"A use-by date is related to food safety." },
-        { n:6, type:"mc", text:"The word “avoidable” in paragraph 4 is closest in meaning to ______.",
-          options:["preventable","unavoidable","unexpected","unnecessary"],
-          answer:"A", explain:"Avoidable = preventable (có thể ngăn chặn)." },
-        { n:7, type:"mc", text:"The word “surplus” in paragraph 5 is closest in meaning to ______.",
-          options:["damaged","additional","limited","expensive"],
-          answer:"B", explain:"Surplus = additional / extra (dư thừa)." },
-        { n:8, type:"mc", text:"The phrase “These household habits” in paragraph 4 refers to ______.",
-          options:["buying unnecessary products and preparing large portions","checking refrigerators, planning meals and storing food correctly","donating food and collecting information about waste","offering supermarket discounts and changing restaurant menus"],
-          answer:"B", explain:"Refers to checking refrigerators, planning meals and storing food correctly." },
-        { n:9, type:"mc", text:"What can be inferred about food products that have passed their best-before dates?",
-          options:["They must always be thrown away immediately.","They may still be suitable for consumption under appropriate conditions.","They are always dangerous to human health.","They no longer contain any nutritional value."],
-          answer:"B", explain:"Food may remain suitable for consumption depending on storage and condition." },
-        { n:10, type:"mc", text:"What does the passage suggest about successful food waste reduction?",
-          options:["Individual consumers can solve the entire problem without outside support.","Supermarkets should focus exclusively on selling cheaper products.","Different groups need to take action at different stages of the food supply chain.","Governments should concentrate only on collecting food waste statistics."],
-          answer:"C", explain:"Consumers, businesses and governments all have responsibilities." },
-        { n:11, type:"mc", text:"Why did the author write this passage?",
-          options:["To criticise consumers for wasting food.","To describe how supermarkets manage their daily operations.","To explain the food waste problem and introduce practical ways of reducing it.","To persuade readers to stop purchasing packaged food."],
-          answer:"C", explain:"The author explains the problem and introduces practical solutions." },
-        { n:12, type:"mc", text:"Which of the following statements expresses an opinion rather than a verifiable fact?",
-          options:["Approximately 1.05 billion tonnes of food waste were generated worldwide in 2022.","Households account for approximately 60% of total food waste.","Food waste occurs at several stages of the food supply chain.","Preparing a weekly meal plan is the best method for every family to reduce food waste."],
-          answer:"D", explain:"Claiming one method is best for every family is a personal judgement." }
-      ]
-    },
-    {
-      title: "II. Matching",
-      instruction: "Questions 13–20 · Match each statement with the correct person (A, B, C or D). You may use each letter more than once.",
-      passage: 1,
-      hint: "<b>A</b> – Anna (Community Garden) &nbsp;·&nbsp; <b>B</b> – Ben (Urban Tree Monitoring)<br><b>C</b> – Chloe (River Clean-up) &nbsp;·&nbsp; <b>D</b> – Daniel (Rooftop Farming)",
-      questions: [
-        { n:13, type:"select", text:"This person uses digital tools to collect information about trees.", answer:"B",
-          options:[{value:"A",label:"A – Anna"},{value:"B",label:"B – Ben"},{value:"C",label:"C – Chloe"},{value:"D",label:"D – Daniel"}] },
-        { n:14, type:"select", text:"This person regularly participates in activities to remove rubbish from a waterway.", answer:"C",
-          options:[{value:"A",label:"A – Anna"},{value:"B",label:"B – Ben"},{value:"C",label:"C – Chloe"},{value:"D",label:"D – Daniel"}] },
-        { n:15, type:"select", text:"This person wants to gain practical experience for a future professional career.", answer:"D",
-          options:[{value:"A",label:"A – Anna"},{value:"B",label:"B – Ben"},{value:"C",label:"C – Chloe"},{value:"D",label:"D – Daniel"}] },
-        { n:16, type:"select", text:"This person enjoys helping younger people understand food production.", answer:"A",
-          options:[{value:"A",label:"A – Anna"},{value:"B",label:"B – Ben"},{value:"C",label:"C – Chloe"},{value:"D",label:"D – Daniel"}] },
-        { n:17, type:"select", text:"This person is more interested in recording environmental information than planting trees.", answer:"B",
-          options:[{value:"A",label:"A – Anna"},{value:"B",label:"B – Ben"},{value:"C",label:"C – Chloe"},{value:"D",label:"D – Daniel"}] },
-        { n:18, type:"select", text:"This person is concerned about the possible effects of rubbish on drainage systems.", answer:"C",
-          options:[{value:"A",label:"A – Anna"},{value:"B",label:"B – Ben"},{value:"C",label:"C – Chloe"},{value:"D",label:"D – Daniel"}] },
-        { n:19, type:"select", text:"This person wants to grow vegetables together with other local residents.", answer:"A",
-          options:[{value:"A",label:"A – Anna"},{value:"B",label:"B – Ben"},{value:"C",label:"C – Chloe"},{value:"D",label:"D – Daniel"}] },
-        { n:20, type:"select", text:"This person learns how to maintain irrigation systems in an elevated growing area.", answer:"D",
-          options:[{value:"A",label:"A – Anna"},{value:"B",label:"B – Ben"},{value:"C",label:"C – Chloe"},{value:"D",label:"D – Daniel"}] }
-      ]
-    },
-    {
-      title: "III. Short Answer",
-      instruction: "Questions 21–26 · Answer using NO MORE THAN THREE WORDS from the passage.",
-      passage: 2,
-      questions: [
-        { n:21, type:"text", text:"What do urban trees provide to cool nearby buildings and roads?", answers:["shade","the shade"] },
-        { n:22, type:"text", text:"What do tree leaves and branches intercept and temporarily store?", answers:["rainfall","rain","the rainfall"] },
-        { n:23, type:"text", text:"What do green corridors and urban parks help protect?", answers:["urban biodiversity","biodiversity"] },
-        { n:24, type:"text", text:"What can parks encourage through opportunities for walking and sports?", answers:["physical activity","physical activities"] },
-        { n:25, type:"text", text:"What may residents experience in neighbourhoods with few trees and many paved surfaces during hot weather?", answers:["higher temperatures","higher temperature","high temperatures","heat"] },
-        { n:26, type:"text", text:"What should urban green-space planning respond to, according to the passage?", answers:["local needs","the local needs","local need"] }
-      ]
-    },
-    {
-      title: "IV. Sentence / Summary Completion",
-      instruction: "Questions 27–30 · Complete using NO MORE THAN THREE WORDS from the passage.",
-      passage: 3,
-      questions: [
-        { n:27, type:"text", text:"Repairing a damaged product can extend its useful ______.", answers:["lifespan","life span","useful lifespan"] },
-        { n:28, type:"text", text:"One environmental benefit of repairing products is reduced consumption of natural ______.", answers:["resources","natural resources","natural resource"] },
-        { n:29, type:"text", text:"Community repair events allow residents to learn from volunteers and develop practical ______.", answers:["repair skills","skills","practical repair skills"] },
-        { n:30, type:"text", text:"However, some products cannot be repaired easily because suitable ______ are unavailable.", answers:["spare parts","spare part","parts"] }
-      ]
-    }
-  ]
-},
-
-/* ---------------------------------------------------------
-   TEST 03
-   --------------------------------------------------------- */
-{
-  id: "t3",
-  name: "TEST 03 – Travel · Transport · Reefs · Sleep",
-  passages: [
-    { label: "Passage 1", title: "PASSAGE 1 – Rethinking the Way We Travel", html: `
-      <p>Tourism is an important industry in many countries. It creates employment, supports local businesses and gives visitors opportunities to experience different cultures. However, the rapid growth of tourism can also create difficulties, particularly in destinations that receive large numbers of visitors throughout the year.</p>
-      <p>One common problem is overcrowding. When too many tourists visit a popular destination at the same time, public spaces may become crowded and local transport systems may struggle to meet demand. In some places, the cost of accommodation and everyday goods may also increase, making life more expensive for local residents.</p>
-      <p>The natural environment can be affected as well. Beaches may become polluted, wildlife habitats may be disturbed and historic sites may suffer physical damage. These problems can reduce the quality of the visitor experience and make destinations less attractive in the long term.</p>
-      <p>To address these challenges, many organisations promote sustainable tourism. This approach aims to balance three important areas: environmental protection, economic development and respect for local cultures. It does not mean that people should stop travelling. Instead, it encourages tourists, businesses and governments to make more responsible decisions.</p>
-      <p>Individual travellers can contribute in several ways. They can choose locally owned accommodation, purchase products made by local craftspeople and use public transport when possible. They should also respect local customs, avoid leaving rubbish behind and follow instructions when visiting protected natural areas.</p>
-      <p>Tourism companies have responsibilities too. They can employ local workers, reduce unnecessary waste and provide information about responsible behaviour. Governments, meanwhile, need to protect important natural and cultural sites and ensure that local communities benefit from tourism development.</p>
-      <p>Some people believe that sustainable tourism is mainly about protecting the environment. However, this view is incomplete. A destination cannot be considered truly sustainable if its natural attractions are protected but local residents receive few economic benefits or have no influence over important decisions.</p>
-      <p>Ultimately, successful tourism requires cooperation. Visitors should be aware of their impact, businesses should operate responsibly and governments should create effective policies. When these groups work together, tourism can continue to provide benefits without destroying the qualities that make a destination special.</p>
-    `},
-    { label: "Passage 2", title: "PASSAGE 2 – Different Reasons for Using Public Transport", html: `
-      <p>Four people explain why they choose public transport in their daily lives.</p>
-      <div class="person"><h4>Anna</h4><p>“I recently started taking the bus to college because it is more affordable than travelling by motorbike every day. I can use a monthly travel card, which helps me manage my budget. The journey sometimes takes longer, but saving money is important to me.”</p></div>
-      <div class="person"><h4>Brian</h4><p>“I usually travel by train because it is more reliable during rush hour. When I drive, I never know how long I will be stuck in traffic. With the train, I can plan my daily schedule more easily and arrive at work on time.”</p></div>
-      <div class="person"><h4>Carla</h4><p>“The metro is my favourite way to travel because the station is only a few minutes from my office. It is also accessible to people with mobility difficulties because many stations have lifts and clear signs. I find it convenient, especially when I need to travel across the city.”</p></div>
-      <div class="person"><h4>David</h4><p>“I used to drive to work every day, but I changed to public transport because I wanted to reduce my environmental impact. Private vehicles produce emissions that contribute to air pollution. I believe using buses and trains is one practical way to make my daily commute more environmentally friendly.”</p></div>
-    `},
-    { label: "Passage 3", title: "PASSAGE 3 – Understanding Coral Reefs", html: `
-      <p>Coral reefs are among the most diverse ecosystems in the ocean. They provide habitats for thousands of marine species, including fish, sea turtles and other organisms. They are also important to people because they support fishing, tourism and other economic activities. In addition, coral reefs help protect coastlines by reducing the force of waves during storms.</p>
-      <p>Despite their importance, coral reefs face several threats. One of the most serious is rising ocean temperature. When water becomes too warm, corals may experience stress and expel the tiny algae living inside their tissues. This process is known as coral bleaching. Without these algae, corals lose much of their colour and an important source of food.</p>
-      <p>Bleaching does not always mean that corals are dead. If the stressful conditions do not last too long, some corals can recover. However, when high temperatures continue for an extended period, corals may become weak and eventually die.</p>
-      <p>Human activities also contribute to reef damage. Pollution from land can enter the ocean through rivers and rainwater. Unsustainable fishing practices may remove important marine species, while careless visitors can physically damage corals by touching them or stepping on them.</p>
-      <p>Scientists and conservation organisations are working to protect coral reefs. They monitor reef conditions, study coral health and develop restoration projects. Local communities can also help by reducing pollution, following responsible diving practices and supporting marine protection programmes.</p>
-      <p>Although global climate change remains a major threat, reducing local sources of damage can improve the ability of coral reefs to survive stressful conditions. Protecting these ecosystems requires long-term cooperation between governments, scientists, businesses and local residents.</p>
-    `},
-    { label: "Passage 4", title: "PASSAGE 4 – Sleep and the Learning Process", html: `
-      <p>Many students believe that studying for longer hours is the best way to prepare for examinations. Some even stay awake late at night to review lessons, hoping to remember more information. However, sleep plays an important role in learning and should not be treated as wasted time.</p>
-      <p>During the day, the brain receives and processes a large amount of information. While people sleep, the brain continues working. Certain stages of sleep help organise newly learned information and form memories. This process allows some information to become more stable and easier to recall later.</p>
-      <p>Sleep is also closely connected to concentration. Students who do not get enough sleep may find it difficult to pay attention in class, understand complicated ideas or make decisions. Even if they spend many hours studying, their performance may be affected by tiredness.</p>
-      <p>Developing healthy sleeping habits can improve the quality of sleep. For example, going to bed and waking up at regular times helps establish a consistent routine. Students should also reduce their caffeine consumption in the evening and avoid using electronic devices immediately before bedtime.</p>
-      <p>The amount of sleep required can vary depending on a person’s age and individual needs. Therefore, there is no single sleeping schedule that works perfectly for everyone. Nevertheless, getting sufficient sleep, studying regularly and taking suitable breaks can help students learn more effectively.</p>
-    `}
-  ],
-  sections: [
-    {
-      title: "I. Multiple Choice",
-      instruction: "Questions 1–12 · Choose the best answer A, B, C or D.",
-      passage: 0,
-      questions: [
-        { n:1, type:"mc", text:"What is the main idea of the passage?",
-          options:["Tourism should be developed without any restrictions.","Sustainable tourism requires responsible actions from different groups.","International tourists are responsible for most environmental problems.","Governments should focus mainly on increasing tourist numbers."],
-          answer:"B", explain:"The passage emphasises the responsibility of multiple parties in sustainable tourism." },
-        { n:2, type:"mc", text:"Which is the best title for the passage?",
-          options:["The History of International Travel","Why Tourists Prefer Popular Destinations","Sustainable Tourism: Benefits and Responsibilities","The Economic Problems of Developing Countries"],
-          answer:"C", explain:"Covers sustainable tourism, its benefits and responsibilities." },
-        { n:3, type:"mc", text:"According to the passage, what may happen when too many tourists visit a destination?",
-          options:["Local transport systems may become overloaded.","Local residents may receive higher salaries.","Accommodation prices may become cheaper.","Historic sites may become easier to maintain."],
-          answer:"A", explain:"Too many visitors can overload local transport systems." },
-        { n:4, type:"mc", text:"Which of the following is mentioned as a way tourists can support local communities?",
-          options:["Staying in international hotel chains","Avoiding traditional cultural activities","Buying products made by local craftspeople","Visiting protected areas without restrictions"],
-          answer:"C", explain:"Tourists can buy products made by local craftspeople." },
-        { n:5, type:"mc", text:"What should governments do to promote sustainable tourism?",
-          options:["Encourage visitors to avoid public transport.","Protect natural and cultural sites.","Prevent local businesses from employing tourists.","Focus only on increasing the number of visitors."],
-          answer:"B", explain:"Governments need to protect natural and cultural sites." },
-        { n:6, type:"mc", text:"The word “overcrowding” in paragraph 2 is closest in meaning to:",
-          options:["a lack of public services","a situation with too many people in one place","a shortage of accommodation","a reduction in the number of visitors"],
-          answer:"B", explain:"Overcrowding = a situation with too many people in one place." },
-        { n:7, type:"mc", text:"The word “influence” in paragraph 7 is closest in meaning to:",
-          options:["control or affect decisions","refuse to accept changes","avoid taking responsibility","provide financial support"],
-          answer:"A", explain:"Influence = affect or have control over decisions." },
-        { n:8, type:"mc", text:"The phrase “These problems” in paragraph 3 refers to:",
-          options:["employment and economic development","the cost of accommodation and transport","pollution, habitat disturbance and damage to historic sites","the lack of information for international tourists"],
-          answer:"C", explain:"Refers to pollution, habitat disturbance and damage to historic sites." },
-        { n:9, type:"mc", text:"What can be inferred from paragraph 7?",
-          options:["Environmental protection alone is not enough to make tourism sustainable.","Local residents are usually against tourism development.","Economic development is more important than cultural protection.","Sustainable tourism is only suitable for small destinations."],
-          answer:"A", explain:"Sustainable tourism must also consider local communities, not only the environment." },
-        { n:10, type:"mc", text:"What does the writer suggest about individual travellers?",
-          options:["Their actions have no meaningful effect on tourism.","They should leave all environmental responsibilities to governments.","Their choices can contribute to more responsible tourism.","They should avoid travelling to popular destinations."],
-          answer:"C", explain:"Individual choices can contribute to more responsible tourism." },
-        { n:11, type:"mc", text:"What is the writer’s main purpose?",
-          options:["To persuade readers to visit a particular country","To explain sustainable tourism and the responsibilities involved","To compare the prices of different travel services","To describe the history of the tourism industry"],
-          answer:"B", explain:"The author explains sustainable tourism and the responsibilities involved." },
-        { n:12, type:"mc", text:"Which statement expresses an opinion rather than a directly stated fact?",
-          options:["Tourism creates employment in many countries.","Tourists can use public transport when possible.","Governments need to protect important cultural sites.","Cooperation is the most effective way to guarantee successful tourism."],
-          answer:"D", explain:"This is the author’s evaluative judgement, not a directly stated fact." }
-      ]
-    },
-    {
-      title: "II. Matching – Part A: Vocabulary",
-      instruction: "Questions 13–16 · Match each word with its correct definition.",
-      passage: 1,
-      hint: "<b>A</b> – Easy to reach, enter or use<br><b>B</b> – Not costing too much money<br><b>C</b> – Able to be trusted or depended on<br><b>D</b> – To travel regularly between home and work or school",
-      questions: [
-        { n:13, type:"select", text:"Affordable", answer:"B",
-          options:[{value:"A",label:"A – Easy to reach, enter or use"},{value:"B",label:"B – Not costing too much money"},{value:"C",label:"C – Able to be trusted or depended on"},{value:"D",label:"D – To travel regularly between home and work or school"}] },
-        { n:14, type:"select", text:"Reliable", answer:"C",
-          options:[{value:"A",label:"A – Easy to reach, enter or use"},{value:"B",label:"B – Not costing too much money"},{value:"C",label:"C – Able to be trusted or depended on"},{value:"D",label:"D – To travel regularly between home and work or school"}] },
-        { n:15, type:"select", text:"Accessible", answer:"A",
-          options:[{value:"A",label:"A – Easy to reach, enter or use"},{value:"B",label:"B – Not costing too much money"},{value:"C",label:"C – Able to be trusted or depended on"},{value:"D",label:"D – To travel regularly between home and work or school"}] },
-        { n:16, type:"select", text:"Commute", answer:"D",
-          options:[{value:"A",label:"A – Easy to reach, enter or use"},{value:"B",label:"B – Not costing too much money"},{value:"C",label:"C – Able to be trusted or depended on"},{value:"D",label:"D – To travel regularly between home and work or school"}] }
-      ]
-    },
-    {
-      title: "II. Matching – Part B: Information",
-      instruction: "Questions 17–20 · Match each statement with the correct person.",
-      passage: 1,
-      hint: "<b>Anna</b> &nbsp;·&nbsp; <b>Brian</b> &nbsp;·&nbsp; <b>Carla</b> &nbsp;·&nbsp; <b>David</b>",
-      questions: [
-        { n:17, type:"select", text:"This person chooses public transport mainly to save money.", answer:"Anna",
-          options:[{value:"Anna",label:"Anna"},{value:"Brian",label:"Brian"},{value:"Carla",label:"Carla"},{value:"David",label:"David"}] },
-        { n:18, type:"select", text:"This person prefers a transport system that helps avoid unpredictable delays.", answer:"Brian",
-          options:[{value:"Anna",label:"Anna"},{value:"Brian",label:"Brian"},{value:"Carla",label:"Carla"},{value:"David",label:"David"}] },
-        { n:19, type:"select", text:"This person values facilities that make public transport easier for people with mobility difficulties.", answer:"Carla",
-          options:[{value:"Anna",label:"Anna"},{value:"Brian",label:"Brian"},{value:"Carla",label:"Carla"},{value:"David",label:"David"}] },
-        { n:20, type:"select", text:"This person wants to reduce pollution caused by daily travel.", answer:"David",
-          options:[{value:"Anna",label:"Anna"},{value:"Brian",label:"Brian"},{value:"Carla",label:"Carla"},{value:"David",label:"David"}] }
-      ]
-    },
-    {
-      title: "III. Short Answer",
-      instruction: "Questions 21–26 · Answer using NO MORE THAN THREE WORDS from the passage.",
-      passage: 2,
-      questions: [
-        { n:21, type:"text", text:"What do coral reefs help protect?", answers:["coastlines","coastline","the coastlines","the coastline"] },
-        { n:22, type:"text", text:"What do corals expel from their tissues during bleaching?", answers:["tiny algae","algae","the tiny algae"] },
-        { n:23, type:"text", text:"What may happen to corals if high temperatures continue for a long time?", answers:["become weak","weak","weaken","they become weak","die"] },
-        { n:24, type:"text", text:"What can enter the ocean through rivers and rainwater?", answers:["pollution","land pollution"] },
-        { n:25, type:"text", text:"What do scientists monitor to understand the condition of coral reefs?", answers:["reef conditions","conditions","reef condition","coral conditions"] },
-        { n:26, type:"text", text:"What can local communities support to help protect marine environments?", answers:["marine protection programmes","marine protection programs","marine protection programme","protection programmes","marine programmes"] }
-      ]
-    },
-    {
-      title: "IV. Sentence Completion",
-      instruction: "Questions 27–30 · Complete using NO MORE THAN THREE WORDS from the passage.",
-      passage: 3,
-      questions: [
-        { n:27, type:"text", text:"During sleep, the brain helps organise newly learned information and form ______.", answers:["memories","memory"] },
-        { n:28, type:"text", text:"Students who lack sleep may have difficulty paying ______ in class.", answers:["attention","pay attention"] },
-        { n:29, type:"text", text:"Going to bed and waking up at regular times helps establish a consistent ______.", answers:["routine","consistent routine","a routine"] },
-        { n:30, type:"text", text:"Students should reduce their ______ in the evening.", answers:["caffeine consumption","caffeine","caffeine intake"] }
-      ]
-    }
-  ]
-}
+const TOPICS = [
+  {id:1, name:"Prepositions of Time", ov:"Use at + clock time / at night / at the weekend; on + days, dates, specific occasions; in + months, years, seasons, parts of the day. No preposition with next, last, this, every."},
+  {id:2, name:"Prepositions of Place", ov:"Use in for enclosed spaces, on for surfaces, at for points. Above/over, below/under, between/among, in front of/behind, across/through/along."},
+  {id:3, name:"Phrasal Verbs", ov:"Phrasal verbs = verb + particle. Separable verbs allow pronoun objects between verb and particle (turn it up); inseparable verbs keep the particle attached (look after her)."},
+  {id:4, name:"Gerunds & Infinitives", ov:"Gerund (-ing) after verbs like enjoy, avoid, admit, mind; to-infinitive after decide, hope, refuse; some verbs change meaning (stop doing vs stop to do)."},
+  {id:5, name:"Past Participles", ov:"V3 forms in perfect tenses (have + V3), passive voice (be + V3), as adjectives (a broken window), and in participle clauses (Surprised by the news, she...)."},
+  {id:6, name:"Relative Clauses", ov:"Defining clauses use who/which/that; non-defining use commas and never 'that'. Whose = possession. Where = place. When = time. Why = reason."},
+  {id:7, name:"Reduced Relative Clauses", ov:"Drop the relative pronoun + be: active → V-ing (the man standing there); passive → V3 (the book written by Orwell). Object relative clauses cannot be reduced this way."},
+  {id:8, name:"Prepositions + Relative Clauses", ov:"Formal: preposition + which/whom (the house in which I grew up). Informal: preposition at end (the house I grew up in). 'That' cannot follow a preposition."},
+  {id:9, name:"Reported Speech", ov:"Backshift tenses when the reporting verb is past: 'I am tired' → she was tired. Adjust pronouns, time (tomorrow → the following day), place (here → there). No backshift for universal truths."},
+  {id:10, name:"Conjunctions", ov:"Coordinating: and, but, or, nor, for, yet, so. Subordinating: because, although, unless, while. Correlative: both...and, either...or, neither...nor, not only...but also."},
+  {id:11, name:"Purpose Clauses", ov:"to / in order to / so as to + V (same subject); so that / in order that + clause (different subjects); in order not to / so as not to (negative); for fear of / in case."},
+  {id:12, name:"Result Clauses", ov:"so + adj/adv + that; such + (a/an) + adj + noun + that; so many/much/few/little + noun + that; too + adj + to V; adj + enough + to V."}
 ];
 
 /* =========================================================
-   STATE
+   QUESTION BANK  (10 per topic = 120 questions, fully vetted)
+   Format: {t:topicId, s:section, q:question, o:[A,B,C,D], a:correctIndex, e:explanation}
    ========================================================= */
-const STORAGE_KEY = "b1b2_reading_app_v1";
-const testSelect   = document.getElementById("testSelect");
-const timerEl      = document.getElementById("timer");
-const scoreBox     = document.getElementById("scoreBox");
-const submitBtn    = document.getElementById("submitBtn");
-const resetBtn     = document.getElementById("resetBtn");
-const readingTabs  = document.getElementById("readingTabs");
-const readingBody  = document.getElementById("readingBody");
-const answerBody   = document.getElementById("answerBody");
-const progressEl   = document.getElementById("progress");
-const subtitleEl   = document.getElementById("testSubtitle");
+const QS = [
+  /* ---------- TOPIC 1: Prepositions of Time ---------- */
+  {t:1,s:"At / On / In",q:"The lecture begins ___ 8:45 tomorrow morning.",o:["in","on","at","by"],a:2,e:"Use 'at' with exact clock times: at 8:45."},
+  {t:1,s:"At / On / In",q:"My parents usually visit my grandparents ___ Sundays.",o:["at","on","in","for"],a:1,e:"Use 'on' with days of the week: on Sundays."},
+  {t:1,s:"At / On / In",q:"The company was established ___ 1998.",o:["on","at","in","by"],a:2,e:"Use 'in' with years: in 1998."},
+  {t:1,s:"At / On / In",q:"Many flowers begin to bloom ___ spring.",o:["at","on","in","during"],a:2,e:"Use 'in' with seasons: in spring."},
+  {t:1,s:"At / On / In",q:"We usually exchange presents ___ Christmas Day.",o:["at","in","on","by"],a:2,e:"Use 'on' with specific days/occasions: on Christmas Day."},
+  {t:1,s:"At / On / In",q:"The streets are often quiet ___ midnight.",o:["in","on","at","during"],a:2,e:"Use 'at' with precise points in time: at midnight."},
+  {t:1,s:"At / On / In",q:"My brother prefers studying ___ the evening.",o:["on","at","in","by"],a:2,e:"Use 'in' with parts of the day: in the evening (but 'at night')."},
+  {t:1,s:"At / On / In",q:"The final examination will take place ___ 15 December.",o:["in","at","on","for"],a:2,e:"Use 'on' with exact dates: on 15 December."},
+  {t:1,s:"At / On / In",q:"I usually feel more energetic ___ the morning.",o:["at","in","on","by"],a:1,e:"Use 'in' with parts of the day: in the morning."},
+  {t:1,s:"No preposition",q:"We are planning to move into our new apartment ___ next month.",o:["in","on","at","— (no preposition)"],a:3,e:"No preposition before next/last/this/every + time noun."},
 
-let currentTest   = null;
-let activePassage = 0;
-let answers       = {};
-let submitted     = false;
-let elapsed       = 0;
-let timerHandle   = null;
+  /* ---------- TOPIC 2: Prepositions of Place ---------- */
+  {t:2,s:"In / On / At",q:"There are several interesting paintings ___ the walls of the gallery.",o:["in","on","at","under"],a:1,e:"Use 'on' with surfaces: on the walls."},
+  {t:2,s:"In / On / At",q:"My younger sister is waiting for me ___ the main entrance of the college.",o:["in","on","at","over"],a:2,e:"Use 'at' with points/entrances: at the main entrance."},
+  {t:2,s:"In / On / At",q:"The children are playing ___ the garden behind their house.",o:["at","in","on","above"],a:1,e:"Use 'in' for enclosed areas: in the garden."},
+  {t:2,s:"In / On / At",q:"We found an old photograph ___ the bottom of the drawer.",o:["in","on","at","over"],a:0,e:"Use 'in' for contained spaces: in the bottom of the drawer."},
+  {t:2,s:"In / On / At",q:"There is a small village ___ the coast of southern England.",o:["at","in","on","under"],a:2,e:"Use 'on' with coastlines: on the coast."},
+  {t:2,s:"In / On / At",q:"The students are sitting ___ the classroom, waiting for their teacher.",o:["at","in","on","over"],a:1,e:"Use 'in' for enclosed spaces: in the classroom."},
+  {t:2,s:"In / On / At",q:"My grandparents live ___ a quiet street near the river.",o:["in","at","on","above"],a:2,e:"Use 'on' with streets: on a quiet street."},
+  {t:2,s:"In / On / At",q:"Someone has left a cup of coffee ___ my desk.",o:["at","in","on","between"],a:2,e:"Use 'on' with surfaces: on my desk."},
+  {t:2,s:"In / On / At",q:"The receptionist is standing ___ the front desk.",o:["at","on","in","below"],a:0,e:"Use 'at' with points of activity: at the front desk."},
+  {t:2,s:"In / On / At",q:"There are many beautiful islands ___ the Pacific Ocean.",o:["on","at","in","over"],a:2,e:"Use 'in' with bodies of water (as regions): in the Pacific Ocean."},
+
+  /* ---------- TOPIC 3: Phrasal Verbs ---------- */
+  {t:3,s:"Meaning",q:"I need to ___ what time the last train leaves before buying my ticket.",o:["find out","give up","take after","put off"],a:0,e:"Find out = discover information."},
+  {t:3,s:"Meaning",q:"The meeting was ___ because several members of the committee were absent.",o:["brought up","called off","taken over","looked after"],a:1,e:"Call off = cancel."},
+  {t:3,s:"Meaning",q:"My younger brother takes ___ our father; they have very similar personalities.",o:["up","after","over","off"],a:1,e:"Take after = resemble (a parent/relative)."},
+  {t:3,s:"Meaning",q:"The police are trying to ___ the cause of the accident.",o:["look into","look after","look up to","look forward to"],a:0,e:"Look into = investigate."},
+  {t:3,s:"Meaning",q:"We have ___ sugar, so could you buy some at the supermarket?",o:["run into","run out of","run over","run away"],a:1,e:"Run out of = have no more of something."},
+  {t:3,s:"Meaning",q:"Despite several difficulties, the researchers refused to ___.",o:["give in","give away","give off","give back"],a:0,e:"Give in = surrender, stop resisting."},
+  {t:3,s:"Meaning",q:"I ___ an old friend while I was shopping at the market yesterday.",o:["came across","came up with","came down with","came along"],a:0,e:"Come across = meet/find by chance."},
+  {t:3,s:"Meaning",q:"The company decided to ___ a new policy to improve working conditions.",o:["bring about","bring up","bring in","bring out"],a:2,e:"Bring in = introduce (a new policy/law)."},
+  {t:3,s:"Meaning",q:"The students need to ___ their assignments before the deadline.",o:["hand in","hand out","hand over","hand back"],a:0,e:"Hand in = submit."},
+  {t:3,s:"Meaning",q:"You should ___ your English vocabulary regularly if you want to make progress.",o:["look after","build up","turn down","break into"],a:1,e:"Build up = gradually increase/develop."},
+
+  /* ---------- TOPIC 4: Gerunds & Infinitives ---------- */
+  {t:4,s:"Verb + gerund",q:"My brother enjoys ___ documentaries about wildlife.",o:["watch","watching","to watch","watched"],a:1,e:"Enjoy + gerund (V-ing)."},
+  {t:4,s:"Verb + gerund",q:"The students avoided ___ unnecessary mistakes in their assignments.",o:["make","to make","making","made"],a:2,e:"Avoid + gerund."},
+  {t:4,s:"Verb + gerund",q:"She admitted ___ the confidential document without permission.",o:["copying","to copy","copy","copied"],a:0,e:"Admit + gerund."},
+  {t:4,s:"Verb + gerund",q:"Would you mind ___ the window? It is rather cold outside.",o:["close","to close","closing","closed"],a:2,e:"Would you mind + gerund."},
+  {t:4,s:"Verb + gerund",q:"The manager postponed ___ the final decision until next Monday.",o:["announce","announcing","to announce","announced"],a:1,e:"Postpone + gerund."},
+  {t:4,s:"Verb + gerund",q:"I strongly recommend ___ this book before taking the examination.",o:["read","to read","reading","reads"],a:2,e:"Recommend + gerund."},
+  {t:4,s:"Verb + gerund",q:"He denied ___ any money from the company.",o:["stealing","to steal","steal","stolen"],a:0,e:"Deny + gerund."},
+  {t:4,s:"Verb + gerund",q:"The children have finished ___ their homework.",o:["do","to do","doing","did"],a:2,e:"Finish + gerund."},
+  {t:4,s:"Verb + gerund",q:"She cannot imagine ___ in a foreign country without learning the local language.",o:["live","living","to live","lived"],a:1,e:"Imagine + gerund."},
+  {t:4,s:"Verb + gerund",q:"The students practise ___ English every day to improve their pronunciation.",o:["speak","to speak","speaking","spoke"],a:2,e:"Practise + gerund."},
+
+  /* ---------- TOPIC 5: Past Participles ---------- */
+  {t:5,s:"V3 forms",q:"The past participle of 'choose' is ___.",o:["chose","chosen","choosing","choosed"],a:1,e:"Choose – chose – chosen."},
+  {t:5,s:"V3 forms",q:"The past participle of 'write' is ___.",o:["wrote","writing","written","writed"],a:2,e:"Write – wrote – written."},
+  {t:5,s:"V3 forms",q:"The past participle of 'break' is ___.",o:["broke","breaking","broken","breaked"],a:2,e:"Break – broke – broken."},
+  {t:5,s:"V3 forms",q:"The past participle of 'speak' is ___.",o:["spoke","spoken","speaking","speaked"],a:1,e:"Speak – spoke – spoken."},
+  {t:5,s:"V3 forms",q:"The past participle of 'steal' is ___.",o:["stole","stealing","stolen","stealed"],a:2,e:"Steal – stole – stolen."},
+  {t:5,s:"V3 forms",q:"The past participle of 'freeze' is ___.",o:["froze","frozen","freezing","freezed"],a:1,e:"Freeze – froze – frozen."},
+  {t:5,s:"V3 forms",q:"The past participle of 'grow' is ___.",o:["grew","growing","grown","growed"],a:2,e:"Grow – grew – grown."},
+  {t:5,s:"V3 forms",q:"The past participle of 'shake' is ___.",o:["shook","shaking","shaken","shaked"],a:2,e:"Shake – shook – shaken."},
+  {t:5,s:"V3 forms",q:"The past participle of 'forget' is ___.",o:["forgot","forgotten","forgetting","forgetted"],a:1,e:"Forget – forgot – forgotten."},
+  {t:5,s:"V3 forms",q:"The past participle of 'ride' is ___.",o:["rode","riding","ridden","rided"],a:2,e:"Ride – rode – ridden."},
+
+  /* ---------- TOPIC 6: Relative Clauses ---------- */
+  {t:6,s:"Who / Which / That / Whom",q:"The woman ___ lives next door is a professional photographer.",o:["which","who","whose","whom"],a:1,e:"'Who' refers to a person as subject."},
+  {t:6,s:"Who / Which / That / Whom",q:"The documentary ___ we watched last night was extremely informative.",o:["who","whose","which","whom"],a:2,e:"'Which' refers to a thing as object."},
+  {t:6,s:"Who / Which / That / Whom",q:"The people ___ attended the conference came from several different countries.",o:["which","whom","whose","who"],a:3,e:"'Who' = subject relative pronoun for people."},
+  {t:6,s:"Who / Which / That / Whom",q:"The laptop ___ I ordered online arrived yesterday.",o:["that","who","whose","whom"],a:0,e:"'That' can refer to a thing in a defining clause."},
+  {t:6,s:"Who / Which / That / Whom",q:"The actor ___ played the main character received several awards.",o:["which","whose","who","whom"],a:2,e:"'Who' = subject for a person."},
+  {t:6,s:"Who / Which / That / Whom",q:"The restaurant ___ serves traditional Vietnamese food is always crowded.",o:["who","which","whom","whose"],a:1,e:"'Which' = subject for a thing."},
+  {t:6,s:"Who / Which / That / Whom",q:"The employee ___ the director praised has recently been promoted.",o:["whom","whose","which","where"],a:0,e:"'Whom' = object relative pronoun for a person."},
+  {t:6,s:"Who / Which / That / Whom",q:"The painting ___ hangs above the fireplace was created by a local artist.",o:["whom","who","whose","which"],a:3,e:"'Which' refers to a thing."},
+  {t:6,s:"Who / Which / That / Whom",q:"The scientist ___ discovered the new species has published a detailed report.",o:["whom","who","which","whose"],a:1,e:"'Who' = subject for a person."},
+  {t:6,s:"Who / Which / That / Whom",q:"The book ___ you recommended has become one of my favourites.",o:["who","whose","that","whom"],a:2,e:"'That' = object relative pronoun for a thing (defining clause)."},
+
+  /* ---------- TOPIC 7: Reduced Relative Clauses ---------- */
+  {t:7,s:"-ing reduction (active)",q:"The woman ___ near the entrance is our new English teacher.",o:["stand","standing","stood","is standing"],a:1,e:"Active clause (who is standing) → reduced to V-ing: standing."},
+  {t:7,s:"-ing reduction (active)",q:"Students ___ for the final examination should review all twelve grammar topics.",o:["preparing","prepared","prepare","are prepared"],a:0,e:"'Who are preparing' → preparing."},
+  {t:7,s:"-ing reduction (active)",q:"The man ___ the red car is my uncle.",o:["driven","drives","driving","is driven"],a:2,e:"'Who is driving' → driving."},
+  {t:7,s:"-ing reduction (active)",q:"People ___ in rural areas often have strong connections with their neighbours.",o:["lived","living","are lived","to live"],a:1,e:"'Who live' → living."},
+  {t:7,s:"-ing reduction (active)",q:"The children ___ in the garden belong to my sister.",o:["played","playing","play","are played"],a:1,e:"'Who are playing' → playing."},
+  {t:7,s:"-ing reduction (active)",q:"The company is looking for employees ___ foreign languages.",o:["spoken","speak","speaking","are speaking"],a:2,e:"'Who speak' → speaking."},
+  {t:7,s:"-ing reduction (active)",q:"The woman ___ a blue handbag is waiting for the bus.",o:["carrying","carried","is carried","carry"],a:0,e:"'Who is carrying' → carrying."},
+  {t:7,s:"-ing reduction (active)",q:"The students ___ in the library must keep their voices down.",o:["studied","study","studying","are studied"],a:2,e:"'Who are studying' → studying."},
+  {t:7,s:"-ing reduction (active)",q:"The road ___ to the airport is currently under construction.",o:["leading","led","leads","is led"],a:0,e:"'Which leads' → leading."},
+  {t:7,s:"-ing reduction (active)",q:"Anyone ___ to join the competition should register before Friday.",o:["wanted","wanting","wants","is wanted"],a:1,e:"'Who wants' → wanting."},
+
+  /* ---------- TOPIC 8: Prepositions + Relative Clauses ---------- */
+  {t:8,s:"Preposition + which",q:"This is the house ___ I grew up.",o:["in which","in who","in whom","in that"],a:0,e:"'In which' refers to a place (formal). Never 'in that'."},
+  {t:8,s:"Preposition + which",q:"The company ___ my father works is expanding rapidly.",o:["at whom","for which","for whom","at who"],a:1,e:"'Work for a company' → for which."},
+  {t:8,s:"Preposition + which",q:"The chair ___ I was sitting was uncomfortable.",o:["on whom","on which","at who","at whom"],a:1,e:"'Sit on a chair' → on which."},
+  {t:8,s:"Preposition + which",q:"The reason ___ he left the company remains unclear.",o:["for which","for whom","to which","to whom"],a:0,e:"'The reason for' → for which."},
+  {t:8,s:"Preposition + which",q:"The topic ___ we were talking was extremely interesting.",o:["about whom","about which","with whom","with which"],a:1,e:"'Talk about a topic' → about which."},
+  {t:8,s:"Preposition + which",q:"The tool ___ the workers repaired the machine was specially designed.",o:["by whom","with whom","with which","by which"],a:2,e:"'With a tool' → with which."},
+  {t:8,s:"Preposition + which",q:"The hotel ___ we stayed during our holiday was near the beach.",o:["at which","at whom","in whom","to whom"],a:0,e:"'Stay at a hotel' → at which."},
+  {t:8,s:"Preposition + which",q:"The subject ___ she is particularly interested is environmental protection.",o:["in whom","in which","on whom","on which"],a:1,e:"'Interested in a subject' → in which."},
+  {t:8,s:"Preposition + which",q:"The documents ___ the decision was based were incomplete.",o:["on which","on whom","at whom","for whom"],a:0,e:"'Base a decision on documents' → on which."},
+  {t:8,s:"Preposition + which",q:"The country ___ he was born has changed considerably.",o:["in whom","at which","in which","to whom"],a:2,e:"'Born in a country' → in which."},
+
+  /* ---------- TOPIC 9: Reported Speech ---------- */
+  {t:9,s:"Backshift",q:"Mary said, \"I am very tired.\" → Mary said that she ___ very tired.",o:["is","was","has been","will be"],a:1,e:"Present simple → past simple in reported speech."},
+  {t:9,s:"Backshift",q:"Tom said, \"I work in a bank.\" → Tom said that he ___ in a bank.",o:["works","worked","has worked","is working"],a:1,e:"Present simple → past simple."},
+  {t:9,s:"Backshift",q:"She said, \"I have finished my homework.\" → She said that she ___ her homework.",o:["has finished","finished","had finished","was finishing"],a:2,e:"Present perfect → past perfect."},
+  {t:9,s:"Backshift",q:"They said, \"We are watching a film.\" → They said that they ___ a film.",o:["watched","had watched","were watching","have watched"],a:2,e:"Present continuous → past continuous."},
+  {t:9,s:"Backshift",q:"Peter said, \"I bought a new laptop yesterday.\" → Peter said that he ___ a new laptop the day before.",o:["buys","bought","had bought","has bought"],a:2,e:"Past simple → past perfect; 'yesterday' → 'the day before'."},
+  {t:9,s:"Backshift",q:"Anna said, \"I will call you tomorrow.\" → Anna said that she ___ me the following day.",o:["will call","would call","called","had called"],a:1,e:"Will → would; 'tomorrow' → 'the following day'."},
+  {t:9,s:"Modals",q:"He said, \"I can speak three languages.\" → He said that he ___ speak three languages.",o:["can","could","will","may"],a:1,e:"Can → could."},
+  {t:9,s:"Modals",q:"She said, \"I may be late.\" → She said that she ___ be late.",o:["may","can","might","must"],a:2,e:"May → might."},
+  {t:9,s:"Backshift",q:"John said, \"I have been studying English for five years.\" → John said that he ___ English for five years.",o:["has been studying","had been studying","studied","was studying"],a:1,e:"Present perfect continuous → past perfect continuous."},
+  {t:9,s:"No backshift",q:"The teacher said, \"The Earth revolves around the Sun.\" → The teacher said that the Earth ___ around the Sun.",o:["revolved","revolves","had revolved","was revolving"],a:1,e:"Universal truths do not require backshift."},
+
+  /* ---------- TOPIC 10: Conjunctions ---------- */
+  {t:10,s:"Coordinating",q:"I wanted to go swimming, ___ the weather was too cold.",o:["and","but","so","or"],a:1,e:"'But' shows contrast."},
+  {t:10,s:"Coordinating",q:"You can have tea ___ coffee with your breakfast.",o:["but","nor","or","yet"],a:2,e:"'Or' presents alternatives."},
+  {t:10,s:"Coordinating",q:"She speaks English ___ French fluently.",o:["and","but","yet","so"],a:0,e:"'And' joins two similar items."},
+  {t:10,s:"Coordinating",q:"He was tired, ___ he continued working until midnight.",o:["so","or","yet","for"],a:2,e:"'Yet' = nevertheless, contrast."},
+  {t:10,s:"Coordinating",q:"Hurry up, ___ you will miss the bus.",o:["and","but","or","nor"],a:2,e:"'Or' = otherwise (consequence)."},
+  {t:10,s:"Coordinating",q:"I didn't call him, ___ did I send him a message.",o:["or","nor","but","so"],a:1,e:"'Nor' with inversion after a negative."},
+  {t:10,s:"Coordinating",q:"The restaurant was expensive, ___ the food was excellent.",o:["yet","so","for","or"],a:0,e:"'Yet' shows surprising contrast."},
+  {t:10,s:"Coordinating",q:"She studied very hard, ___ she passed the examination with excellent marks.",o:["but","so","nor","yet"],a:1,e:"'So' shows result."},
+  {t:10,s:"Coordinating",q:"He must be at home, ___ his car is parked outside.",o:["but","or","for","yet"],a:2,e:"'For' = because (formal, coordinating)."},
+  {t:10,s:"Coordinating",q:"The task was difficult, ___ everyone managed to complete it.",o:["but","so","or","for"],a:0,e:"'But' shows contrast."},
+
+  /* ---------- TOPIC 11: Purpose Clauses ---------- */
+  {t:11,s:"To + infinitive",q:"I went to the supermarket ___ some vegetables.",o:["buying","to buy","bought","for buy"],a:1,e:"to + infinitive for purpose."},
+  {t:11,s:"To + infinitive",q:"She studies English ___ become a teacher.",o:["so","for","to","because"],a:2,e:"to + infinitive expresses purpose."},
+  {t:11,s:"To + infinitive",q:"He went to the library ___ a book about history.",o:["borrow","borrowing","to borrow","for borrowing"],a:2,e:"Purpose: to borrow."},
+  {t:11,s:"To + infinitive",q:"We left home early ___ catch the first bus.",o:["to","for","so that","because"],a:0,e:"to + V = purpose."},
+  {t:11,s:"To + infinitive",q:"My brother is learning French ___ communicate with his colleagues.",o:["for","to","so","because"],a:1,e:"to + V (communicate) after a main verb."},
+  {t:11,s:"To + infinitive",q:"She opened the window ___ some fresh air.",o:["get","getting","to get","for get"],a:2,e:"to get = purpose."},
+  {t:11,s:"To + infinitive",q:"They travelled to Japan ___ traditional Japanese culture.",o:["experience","experiencing","to experience","for experience"],a:2,e:"to experience = purpose."},
+  {t:11,s:"To + infinitive",q:"I called my friend ___ her about the meeting.",o:["telling","to tell","tell","for tell"],a:1,e:"to tell = purpose."},
+  {t:11,s:"To + infinitive",q:"He exercises every morning ___ healthy.",o:["staying","stay","to stay","for stay"],a:2,e:"to stay healthy = purpose."},
+  {t:11,s:"To + infinitive",q:"The students went to the computer room ___ their assignments.",o:["complete","completing","to complete","for complete"],a:2,e:"to complete = purpose."},
+
+  /* ---------- TOPIC 12: Result Clauses ---------- */
+  {t:12,s:"So + adj + that",q:"The weather was ___ that we decided to stay at home.",o:["so bad","such bad","too bad","enough bad"],a:0,e:"so + adjective + that = result clause."},
+  {t:12,s:"Such + noun + that",q:"She is ___ talented singer that everyone admires her.",o:["so","such","such a","too"],a:2,e:"such a + adj + singular noun + that."},
+  {t:12,s:"So + adj + that",q:"The exam was ___ difficult that most students couldn't finish it.",o:["such","enough","so","too"],a:2,e:"so + adjective + that."},
+  {t:12,s:"Such + noun + that",q:"It was ___ interesting book that I read it twice.",o:["so","such an","such","too"],a:1,e:"such an + adj + singular noun + that."},
+  {t:12,s:"So many + noun + that",q:"There were ___ people at the concert that we couldn't find any seats.",o:["so much","so many","such much","too much"],a:1,e:"so many + plural countable noun + that."},
+  {t:12,s:"Too + adj + to V",q:"The box is ___ heavy for me to lift.",o:["enough","too","so","such"],a:1,e:"too + adj + (for someone) + to V."},
+  {t:12,s:"Adj + enough",q:"She is old ___ to travel alone.",o:["too","enough","so","such"],a:1,e:"adj + enough + to V."},
+  {t:12,s:"Enough + noun",q:"I don't have ___ money to buy a new laptop.",o:["enough","too","so","such"],a:0,e:"enough + noun + to V."},
+  {t:12,s:"So many + noun + that",q:"He made ___ mistakes that his teacher asked him to do the exercise again.",o:["so much","so little","so many","such much"],a:2,e:"so many + plural countable noun + that."},
+  {t:12,s:"Too + adj + to V",q:"The coffee is ___ hot to drink right now.",o:["too","enough","such","so"],a:0,e:"too + adj + to V."}
+];
+
+/* Give each question a stable id + default difficulty */
+QS.forEach((q, i) => { q.id = 'Q' + (i + 1); q.idx = i; q.d = q.d || 'B1'; });
 
 /* =========================================================
    STORAGE
    ========================================================= */
-function loadStore(){
-  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}"); }
-  catch(e){ return {}; }
+const SK = 'na021_data_v1';
+const DEF = { sessions: [], tests: [], mistakes: [], topicStats: {}, lastTestIds: [] };
+let data = (function () {
+  try { return Object.assign({}, DEF, JSON.parse(localStorage.getItem(SK) || '{}')); }
+  catch (e) { return Object.assign({}, DEF); }
+})();
+function save() { localStorage.setItem(SK, JSON.stringify(data)); }
+
+function ensureTopicStats() {
+  TOPICS.forEach(t => {
+    if (!data.topicStats[t.id]) data.topicStats[t.id] = { attempted: 0, correct: 0, incorrect: 0 };
+  });
 }
-function saveStore(){
-  if(!currentTest) return;
+
+/* =========================================================
+   UTILITIES
+   ========================================================= */
+function shuffle(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+/* Returns questions with shuffled option order and remapped answer index */
+function prepare(qs) {
+  return shuffle(qs).map(q => {
+    const indexed = q.o.map((text, i) => ({ text, i }));
+    const shuf = shuffle(indexed);
+    const newAnswer = shuf.findIndex(x => x.i === q.a);
+    return Object.assign({}, q, {
+      o: shuf.map(x => x.text),
+      a: newAnswer
+    });
+  });
+}
+
+/* Validate a prepared array */
+function validatePrepared(qs) {
+  qs.forEach(q => {
+    if (!Array.isArray(q.o) || q.o.length !== 4) throw new Error('Bad options: ' + q.id);
+    if (typeof q.a !== 'number' || q.a < 0 || q.a > 3) throw new Error('Bad answer: ' + q.id);
+  });
+}
+
+/* =========================================================
+   SESSION STATE
+   ========================================================= */
+let S = null;         // current session
+let timerId = null;   // interval id for comprehensive timer
+let currentPage = 'dashboard';
+let pageParams = {};
+
+/* =========================================================
+   ROUTER
+   ========================================================= */
+function navigate(page, params) {
+  if (timerId) { clearInterval(timerId); timerId = null; }
+  currentPage = page;
+  pageParams = params || {};
+  window.scrollTo(0, 0);
+  render();
+}
+
+function render() {
+  renderNav();
+  const main = document.getElementById('main');
   try {
-    const data = loadStore();
-    data[currentTest.id] = { answers, submitted };
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-  } catch(e){}
-}
-
-/* =========================================================
-   HELPERS
-   ========================================================= */
-function norm(s){
-  return String(s || "")
-    .toLowerCase()
-    .replace(/[.,;:!?"'’‘“”()\[\]\-–—/]/g, " ")
-    .replace(/\s+/g, " ")
-    .trim();
-}
-function totalQuestions(){
-  return currentTest.sections.reduce((a,s)=>a+s.questions.length,0);
-}
-
-/* =========================================================
-   TIMER
-   ========================================================= */
-function startTimer(){
-  clearInterval(timerHandle);
-  renderTimer();
-  timerHandle = setInterval(()=>{
-    elapsed++;
-    renderTimer();
-  }, 1000);
-}
-function renderTimer(){
-  const m = String(Math.floor(elapsed/60)).padStart(2,"0");
-  const s = String(elapsed%60).padStart(2,"0");
-  timerEl.textContent = `${m}:${s}`;
-  timerEl.classList.toggle("warn", elapsed >= 60*60);
-}
-
-/* =========================================================
-   RENDER: TEST LIST
-   ========================================================= */
-TESTS.forEach(t=>{
-  const o = document.createElement("option");
-  o.value = t.id;
-  o.textContent = t.name;
-  testSelect.appendChild(o);
-});
-
-/* =========================================================
-   RENDER: READING
-   ========================================================= */
-function buildTabs(){
-  readingTabs.innerHTML = "";
-  currentTest.passages.forEach((p, i)=>{
-    const b = document.createElement("button");
-    b.className = "tab" + (i === activePassage ? " active" : "");
-    b.textContent = p.label;
-    b.addEventListener("click", ()=>selectPassage(i));
-    readingTabs.appendChild(b);
-  });
-}
-function selectPassage(i){
-  if(i === activePassage) return;
-  activePassage = i;
-  renderReading();
-  [...readingTabs.children].forEach((b, idx)=>b.classList.toggle("active", idx === i));
-}
-function renderReading(){
-  const p = currentTest.passages[activePassage];
-  readingBody.innerHTML = `<h2 class="passage-title">${p.title}</h2>` + p.html;
-  readingBody.scrollTop = 0;
-}
-
-/* =========================================================
-   RENDER: ANSWER SHEET
-   ========================================================= */
-function buildQuestion(q, sec){
-  const el = document.createElement("div");
-  el.className = "q";
-  el.dataset.n = q.n;
-  el.dataset.passage = sec.passage;
-
-  let inner = `<div class="q-head"><span class="q-num">${q.n}</span><span class="q-text">${q.text}</span></div>`;
-
-  if(q.type === "mc"){
-    inner += `<div class="opts">` + q.options.map((t, i)=>{
-      const L = "ABCD"[i];
-      return `<label class="opt">
-        <input type="radio" name="q${q.n}" value="${L}">
-        <span class="badge">${L}</span>
-        <span class="opt-text">${t}</span>
-      </label>`;
-    }).join("") + `</div>`;
-  } else if(q.type === "select"){
-    inner += `<div class="select-wrap"><select class="sel" data-n="${q.n}">
-      <option value="">— choose an answer —</option>` +
-      q.options.map(o=>`<option value="${o.value}">${o.label}</option>`).join("") +
-      `</select></div>`;
-  } else {
-    inner += `<div class="input-wrap">
-      <input type="text" class="txt" data-n="${q.n}" autocomplete="off" spellcheck="false" placeholder="Type your answer…">
-      <span class="wordlimit">≤ 3 words</span>
-    </div>`;
-  }
-
-  inner += `<div class="q-feedback"></div>`;
-  el.innerHTML = inner;
-  return el;
-}
-
-function renderAnswers(){
-  answerBody.innerHTML = "";
-  currentTest.sections.forEach(sec=>{
-    const secEl = document.createElement("section");
-    secEl.className = "section";
-
-    const head = document.createElement("div");
-    head.className = "sec-head";
-    head.innerHTML = `<h3>${sec.title}</h3><p>${sec.instruction || ""}</p>`;
-    secEl.appendChild(head);
-
-    if(sec.hint){
-      const h = document.createElement("div");
-      h.className = "hint";
-      h.innerHTML = sec.hint;
-      secEl.appendChild(h);
+    switch (currentPage) {
+      case 'dashboard': main.innerHTML = pageDashboard(); break;
+      case 'topics': main.innerHTML = pageTopics(); break;
+      case 'practice': main.innerHTML = pagePractice(); break;
+      case 'results': main.innerHTML = pageResults(); break;
+      case 'review': main.innerHTML = pageReview(); break;
+      case 'stats': main.innerHTML = pageStats(); break;
+      case 'settings': main.innerHTML = pageSettings(); break;
+      default: main.innerHTML = '<p>Page not found</p>';
     }
-
-    sec.questions.forEach(q => secEl.appendChild(buildQuestion(q, sec)));
-    answerBody.appendChild(secEl);
-  });
-
-  restoreAnswers();
-  updateProgress();
-  scoreBox.classList.remove("show");
+  } catch (e) {
+    main.innerHTML = '<div class="card"><h2>Error</h2><p>' + e.message + '</p><button onclick="app.home()">Home</button></div>';
+  }
 }
 
-function restoreAnswers(){
-  answerBody.querySelectorAll('input[type="radio"]').forEach(r=> r.checked = false);
-  answerBody.querySelectorAll("select.sel").forEach(s=> s.value = "");
-  answerBody.querySelectorAll("input.txt").forEach(i=> i.value = "");
-  answerBody.querySelectorAll(".q").forEach(q=>{
-    q.classList.remove("correct","wrong");
-    const fb = q.querySelector(".q-feedback");
-    fb.className = "q-feedback";
-    fb.innerHTML = "";
+function renderNav() {
+  const items = [
+    ['dashboard', '🏠 Dashboard'],
+    ['topics', '📖 Grammar Topics'],
+    ['stats', '📊 Statistics'],
+    ['settings', '⚙️ Settings']
+  ];
+  const nav = document.getElementById('nav');
+  nav.innerHTML = items.map(([p, label]) =>
+    `<a href="javascript:void(0)" onclick="app.go('${p}')" class="${currentPage === p ? 'active' : ''}">${label}</a>`
+  ).join('');
+}
+
+/* =========================================================
+   DASHBOARD
+   ========================================================= */
+function pageDashboard() {
+  ensureTopicStats();
+  const tests = data.tests;
+  const totalQ = QS.length;
+  const sessions = data.sessions.length;
+  const testsDone = tests.length;
+  const avg = testsDone ? (tests.reduce((a, t) => a + t.score, 0) / testsDone) : 0;
+  const best = testsDone ? Math.max.apply(null, tests.map(t => t.score)) : 0;
+  const totalCorrect = Object.values(data.topicStats).reduce((a, s) => a + s.correct, 0);
+  const totalAttempted = Object.values(data.topicStats).reduce((a, s) => a + s.attempted, 0);
+  const overallAcc = totalAttempted ? Math.round(100 * totalCorrect / totalAttempted) : 0;
+
+  return `
+    <h1>Welcome to NA021 Practice</h1>
+    <p class="sub">Advanced Grammar — B1–B2 exam preparation</p>
+
+    <div class="grid g4">
+      <div class="stat"><div class="stat-v">${totalQ}</div><div class="stat-l">Questions in bank</div></div>
+      <div class="stat"><div class="stat-v">${sessions}</div><div class="stat-l">Practice sessions</div></div>
+      <div class="stat"><div class="stat-v">${testsDone}</div><div class="stat-l">Tests completed</div></div>
+      <div class="stat"><div class="stat-v">${avg.toFixed(1)}</div><div class="stat-l">Average test score</div></div>
+      <div class="stat"><div class="stat-v">${best.toFixed(1)}</div><div class="stat-l">Highest score</div></div>
+      <div class="stat"><div class="stat-v">${overallAcc}%</div><div class="stat-l">Overall accuracy</div></div>
+      <div class="stat"><div class="stat-v">${totalCorrect}</div><div class="stat-l">Correct answers</div></div>
+      <div class="stat"><div class="stat-v">${totalAttempted - totalCorrect}</div><div class="stat-l">Incorrect answers</div></div>
+    </div>
+
+    <div class="card mt">
+      <h2 style="margin-top:0">🎯 Start a New Test</h2>
+      <p class="tiny" style="margin-bottom:12px">40 questions from all 12 topics · 60 minutes · fresh randomized selection every time.</p>
+      <button onclick="app.startComprehensive()">Start Comprehensive Test</button>
+      <button class="sec" onclick="app.go('topics')">Practise by Topic</button>
+      ${data.mistakes.length ? `<button class="sec" onclick="app.startMistakes()">Practise My Mistakes (${data.mistakes.length})</button>` : ''}
+    </div>
+
+    <div class="card">
+      <h2 style="margin-top:0">Topic Overview</h2>
+      ${TOPICS.map(t => {
+        const st = data.topicStats[t.id] || { attempted: 0, correct: 0 };
+        const acc = st.attempted ? Math.round(100 * st.correct / st.attempted) : 0;
+        return `<div class="topic-row">
+          <div style="flex:1;min-width:180px"><strong>${t.name}</strong></div>
+          <div class="tiny">Attempted: ${st.attempted} · Accuracy: ${acc}%</div>
+          <div style="min-width:120px"><div class="progress" style="margin:0"><div class="pbar" style="width:${acc}%"></div></div></div>
+          <button class="sm sec" onclick="app.startTopic(${t.id})">Practice</button>
+        </div>`;
+      }).join('')}
+    </div>
+  `;
+}
+
+/* =========================================================
+   TOPICS PAGE
+   ========================================================= */
+function pageTopics() {
+  ensureTopicStats();
+  return `
+    <h1>Grammar Topics</h1>
+    <p class="sub">12 modules · practise individually, then review what you got wrong</p>
+    <div class="grid g2">
+      ${TOPICS.map(t => {
+        const count = QS.filter(q => q.t === t.id).length;
+        const st = data.topicStats[t.id] || { attempted: 0, correct: 0 };
+        const acc = st.attempted ? Math.round(100 * st.correct / st.attempted) : 0;
+        const done = st.attempted > 0;
+        return `<div class="card tc" onclick="app.startTopic(${t.id})">
+          <div class="row" style="justify-content:space-between;align-items:flex-start">
+            <h3 style="margin:0">${t.id}. ${t.name}</h3>
+            ${done ? '<span class="bdg bdg-B1">In progress</span>' : '<span class="bdg bdg-A2">New</span>'}
+          </div>
+          <p class="tiny" style="margin:8px 0">${t.ov}</p>
+          <div class="tiny">${count} questions · ${st.attempted} attempted · ${acc}% accuracy</div>
+          <div class="progress"><div class="pbar" style="width:${acc}%"></div></div>
+          <div class="row mt" style="justify-content:flex-start;gap:8px">
+            <button class="sm" onclick="event.stopPropagation();app.startTopic(${t.id})">Practice</button>
+            <button class="sm sec" onclick="event.stopPropagation();app.reviewMistakesForTopic(${t.id})">Review mistakes</button>
+          </div>
+        </div>`;
+      }).join('')}
+    </div>
+  `;
+}
+
+/* =========================================================
+   PRACTICE PAGE  (topic practice + comprehensive + mistakes)
+   ========================================================= */
+function pagePractice() {
+  if (!S) return '<div class="card"><p>No active session.</p><button onclick="app.home()">Return home</button></div>';
+
+  const q = S.questions[S.current];
+  if (!q) return '<div class="card"><p>Question not found.</p></div>';
+
+  const answers = S.answers;
+  const total = S.questions.length;
+  const answeredCount = answers.filter(a => a !== null).length;
+  const pct = Math.round(100 * answeredCount / total);
+
+  let title = '';
+  if (S.type === 'topic') {
+    const t = TOPICS.find(x => x.id === S.topicId);
+    title = 'Topic Practice — ' + (t ? t.name : '');
+  } else if (S.type === 'comprehensive') {
+    title = 'Comprehensive Grammar Test — 40 questions';
+  } else if (S.type === 'mistakes') {
+    title = 'Mistake Practice';
+  }
+
+  let timerHtml = '';
+  if (S.type === 'comprehensive') {
+    const remaining = Math.max(0, Math.floor((S.endsAt - Date.now()) / 1000));
+    const m = Math.floor(remaining / 60);
+    const sec = remaining % 60;
+    const warn = remaining < 300 ? ' warn' : '';
+    timerHtml = `<div class="timer${warn}" id="timer">⏱ ${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}</div>`;
+  }
+
+  return `
+    <div class="row">
+      <div>
+        <h1 style="margin-bottom:2px">${title}</h1>
+        <p class="sub" style="margin-bottom:0">Question ${S.current + 1} of ${total} · ${answeredCount} answered</p>
+      </div>
+      <div class="row" style="gap:8px">${timerHtml}</div>
+    </div>
+
+    <div class="progress"><div class="pbar" style="width:${pct}%"></div></div>
+
+    <div class="card">
+      <div class="tiny">Section: ${q.s} · <span class="bdg bdg-${q.d}">${q.d}</span></div>
+      <div class="qt">${q.q}</div>
+      ${q.o.map((opt, i) =>
+        `<button class="option ${answers[S.current] === i ? 'sel' : ''}" onclick="app.answer(${i})">
+          <strong>${'ABCD'[i]}.</strong> ${opt}
+        </button>`
+      ).join('')}
+    </div>
+
+    <div class="card">
+      <div class="row">
+        <button class="sec" onclick="app.prevQ()" ${S.current === 0 ? 'disabled' : ''}>← Previous</button>
+        ${S.current < total - 1
+          ? '<button onclick="app.nextQ()">Next →</button>'
+          : '<button onclick="app.confirmSubmit()">Submit Test</button>'}
+      </div>
+      <div class="mt">
+        <div class="tiny" style="margin-bottom:6px">Jump to question:</div>
+        <div class="ng">
+          ${S.questions.map((_, i) =>
+            `<div class="nb ${answers[i] !== null ? 'ans' : ''} ${i === S.current ? 'cur' : ''}"
+                  onclick="app.jumpQ(${i})">${i + 1}</div>`
+          ).join('')}
+        </div>
+      </div>
+      ${S.type !== 'comprehensive' ? '<button class="sec" onclick="app.confirmSubmit()">Submit</button>' : ''}
+    </div>
+  `;
+}
+
+/* =========================================================
+   RESULTS PAGE
+   ========================================================= */
+function pageResults() {
+  if (!pageParams.result) return '<div class="card"><p>No result.</p></div>';
+  const r = pageParams.result;
+  return `
+    <h1>Results</h1>
+    <p class="sub">${r.title}</p>
+
+    <div class="card center" style="padding:32px 20px">
+      <div style="font-size:52px;font-weight:700;color:var(--pr);line-height:1">${r.score.toFixed(1)}<span style="font-size:22px;color:#7A8BA1">/10</span></div>
+      <div style="margin-top:8px;font-size:18px;font-weight:600">${r.level}</div>
+      <div class="tiny" style="margin-top:4px">${r.correct} of ${r.total} correct (${r.accuracy}%)</div>
+    </div>
+
+    <div class="grid g4">
+      <div class="stat"><div class="stat-v">${r.total}</div><div class="stat-l">Questions</div></div>
+      <div class="stat"><div class="stat-v" style="color:var(--su)">${r.correct}</div><div class="stat-l">Correct</div></div>
+      <div class="stat"><div class="stat-v" style="color:var(--er)">${r.incorrect}</div><div class="stat-l">Incorrect</div></div>
+      <div class="stat"><div class="stat-v" style="color:#999">${r.unanswered}</div><div class="stat-l">Unanswered</div></div>
+    </div>
+
+    <div class="card">
+      <div class="row">
+        <div class="tiny">Time taken: ${r.timeTaken}</div>
+        <button onclick="app.reviewCurrent()">Review all answers</button>
+      </div>
+      <div class="row mt" style="gap:8px;flex-wrap:wrap">
+        <button class="sec" onclick="app.startMistakes()">Practise My Mistakes</button>
+        ${r.type === 'topic' ? `<button class="sec" onclick="app.startTopic(${r.topicId})">New randomized session</button>` : ''}
+        ${r.type === 'comprehensive' ? '<button class="sec" onclick="app.startComprehensive()">Start New Test</button>' : ''}
+        <button class="sec" onclick="app.home()">Back to dashboard</button>
+      </div>
+    </div>
+  `;
+}
+
+/* =========================================================
+   REVIEW PAGE
+   ========================================================= */
+let reviewFilter = 'all';
+function pageReview() {
+  if (!pageParams.session) return '<div class="card"><p>No session.</p></div>';
+  const rev = pageParams.session;
+  const qs = rev.questions;
+  const ans = rev.answers;
+
+  const filters = [
+    ['all', 'All'],
+    ['correct', 'Correct'],
+    ['incorrect', 'Incorrect'],
+    ['unanswered', 'Unanswered']
+  ];
+
+  let visible = qs.map((q, i) => ({ q, i, selected: ans[i] })).filter(item => {
+    if (reviewFilter === 'all') return true;
+    if (reviewFilter === 'correct') return item.selected === item.q.a;
+    if (reviewFilter === 'incorrect') return item.selected !== null && item.selected !== item.q.a;
+    if (reviewFilter === 'unanswered') return item.selected === null;
+    return true;
   });
 
-  Object.entries(answers).forEach(([n, v])=>{
-    if(!v) return;
-    const radios = answerBody.querySelectorAll(`input[name="q${n}"]`);
-    if(radios.length){
-      radios.forEach(r=>{ if(r.value === v) r.checked = true; });
-      return;
+  return `
+    <div class="row">
+      <h1 style="margin:0">Detailed Answer Review</h1>
+      <button class="sec" onclick="app.backToResults()">← Back to results</button>
+    </div>
+    <p class="sub">${qs.length} questions · filter and study each explanation</p>
+
+    <div class="card" style="padding:12px">
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        ${filters.map(([k, label]) => {
+          let count = 0;
+          if (k === 'all') count = qs.length;
+          else if (k === 'correct') count = qs.filter((q, i) => ans[i] === q.a).length;
+          else if (k === 'incorrect') count = qs.filter((q, i) => ans[i] !== null && ans[i] !== q.a).length;
+          else if (k === 'unanswered') count = qs.filter((q, i) => ans[i] === null).length;
+          return `<button class="fb ${reviewFilter === k ? 'act' : ''}" onclick="app.setFilter('${k}')">${label} (${count})</button>`;
+        }).join('')}
+      </div>
+    </div>
+
+    ${visible.map(item => {
+      const { q, i, selected } = item;
+      const correct = q.a;
+      const isCorrect = selected === correct;
+      const isUnanswered = selected === null;
+      let statusLabel = isUnanswered ? 'Unanswered' : (isCorrect ? 'Correct' : 'Incorrect');
+      let statusColor = isUnanswered ? '#999' : (isCorrect ? 'var(--su)' : 'var(--er)');
+
+      return `<div class="card">
+        <div class="row" style="align-items:flex-start">
+          <div class="tiny">Q${i + 1} · ${q.s} · <span class="bdg bdg-${q.d}">${q.d}</span></div>
+          <div style="color:${statusColor};font-weight:600;font-size:13px">${statusLabel}</div>
+        </div>
+        <div class="qt">${q.q}</div>
+        ${q.o.map((opt, j) => {
+          let cls = 'option';
+          if (j === correct) cls += ' cor';
+          else if (j === selected && !isCorrect) cls += ' wr';
+          return `<div class="${cls}" style="cursor:default">
+            <strong>${'ABCD'[j]}.</strong> ${opt}
+            ${j === correct ? ' ✓ correct answer' : ''}
+            ${j === selected && !isCorrect ? ' ✗ your answer' : ''}
+          </div>`;
+        }).join('')}
+        <div class="exp"><strong>Why:</strong> ${q.e}</div>
+      </div>`;
+    }).join('') || '<div class="card"><p>No questions match this filter.</p></div>'}
+  `;
+}
+
+/* =========================================================
+   STATISTICS PAGE
+   ========================================================= */
+function pageStats() {
+  ensureTopicStats();
+  return `
+    <h1>Learning Statistics</h1>
+    <p class="sub">Detailed progress across all 12 grammar topics</p>
+    <div class="card">
+      ${TOPICS.map(t => {
+        const st = data.topicStats[t.id] || { attempted: 0, correct: 0, incorrect: 0 };
+        const acc = st.attempted ? Math.round(100 * st.correct / st.attempted) : 0;
+        return `<div style="margin-bottom:16px">
+          <div class="row" style="justify-content:space-between">
+            <strong>${t.id}. ${t.name}</strong>
+            <span class="tiny">${st.attempted} attempted · ${st.correct} correct · ${acc}% accuracy</span>
+          </div>
+          <div class="progress"><div class="pbar" style="width:${acc}%"></div></div>
+        </div>`;
+      }).join('')}
+    </div>
+
+    <div class="card">
+      <h2 style="margin-top:0">Test History</h2>
+      ${data.tests.length === 0 ? '<p class="tiny">No tests yet.</p>' :
+        data.tests.slice().reverse().slice(0, 10).map(t => `
+          <div class="topic-row">
+            <div>${t.date}</div>
+            <div class="tiny">${t.correct}/${t.total} correct · ${t.accuracy}%</div>
+            <strong style="color:var(--pr)">${t.score.toFixed(1)}/10</strong>
+          </div>
+        `).join('')
+      }
+    </div>
+  `;
+}
+
+/* =========================================================
+   SETTINGS PAGE
+   ========================================================= */
+function pageSettings() {
+  return `
+    <h1>Settings</h1>
+    <p class="sub">Manage your learning data</p>
+
+    <div class="card">
+      <h2 style="margin-top:0">Progress data</h2>
+      <p class="tiny">All progress is stored in your browser's localStorage.</p>
+      <div class="row mt" style="gap:8px;flex-wrap:wrap">
+        <button class="sec" onclick="app.exportData()">Export JSON</button>
+        <button class="sec" onclick="document.getElementById('fileIn').click()">Import JSON</button>
+        <input type="file" id="fileIn" accept="application/json" style="display:none" onchange="app.importData(this)">
+        <button class="sec" onclick="app.clearTests()">Clear test history</button>
+        <button class="dan" onclick="app.resetAll()">Reset all progress</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2 style="margin-top:0">Statistics summary</h2>
+      <div class="tiny">
+        Practice sessions: <strong>${data.sessions.length}</strong><br>
+        Tests completed: <strong>${data.tests.length}</strong><br>
+        Mistakes tracked: <strong>${data.mistakes.length}</strong><br>
+        Questions in bank: <strong>${QS.length}</strong>
+      </div>
+    </div>
+  `;
+}
+
+/* =========================================================
+   APP ACTIONS (bound to window.app)
+   ========================================================= */
+const app = {
+  go: function (page) { navigate(page); },
+  home: function () { S = null; navigate('dashboard'); },
+
+  startTopic: function (topicId) {
+    const qs = QS.filter(q => q.t === topicId);
+    if (!qs.length) return alert('No questions for this topic.');
+    const prepared = prepare(qs);
+    validatePrepared(prepared);
+    S = {
+      type: 'topic',
+      topicId: topicId,
+      questions: prepared,
+      answers: new Array(prepared.length).fill(null),
+      current: 0,
+      startTime: Date.now(),
+      title: TOPICS.find(t => t.id === topicId).name
+    };
+    navigate('practice');
+  },
+
+  startComprehensive: function () {
+    const prepared = buildComprehensive();
+    if (!prepared.length) return;              // build failed (not enough questions)
+    S = {
+      type: 'comprehensive',
+      topicId: null,
+      questions: prepared,
+      answers: new Array(prepared.length).fill(null),
+      current: 0,
+      startTime: Date.now(),
+      endsAt: Date.now() + 60 * 60 * 1000,
+      title: 'Comprehensive Test'
+    };
+    navigate('practice');
+    startTimer();
+  },
+
+  startMistakes: function () {
+    if (!data.mistakes.length) return alert('No mistakes tracked yet — complete a practice session first.');
+    const ids = new Set(data.mistakes.map(id => String(id)));
+    const qs = QS.filter(q => ids.has(String(q.id)));
+    if (!qs.length) return alert('No matching questions found for tracked mistakes.');
+    const prepared = prepare(qs);
+    validatePrepared(prepared);
+    S = {
+      type: 'mistakes',
+      topicId: null,
+      questions: prepared,
+      answers: new Array(prepared.length).fill(null),
+      current: 0,
+      startTime: Date.now(),
+      title: 'Mistake Practice'
+    };
+    navigate('practice');
+  },
+
+  answer: function (i) {
+    if (!S) return;
+    S.answers[S.current] = i;
+    render();
+  },
+
+  nextQ: function () {
+    if (!S) return;
+    if (S.current < S.questions.length - 1) S.current++;
+    render();
+  },
+
+  prevQ: function () {
+    if (!S) return;
+    if (S.current > 0) S.current--;
+    render();
+  },
+
+  jumpQ: function (i) {
+    if (!S) return;
+    S.current = i;
+    render();
+  },
+
+  confirmSubmit: function () {
+    if (!S) return;
+    if (confirm('Submit your answers? You will not be able to change them afterwards.')) {
+      app.submit();
     }
-    const sel = answerBody.querySelector(`select.sel[data-n="${n}"]`);
-    if(sel){ sel.value = v; return; }
-    const txt = answerBody.querySelector(`input.txt[data-n="${n}"]`);
-    if(txt) txt.value = v;
-  });
+  },
 
-  if(submitted) grade(true);
-}
+  submit: function () {
+    if (!S) return;
+    if (timerId) { clearInterval(timerId); timerId = null; }
 
-/* =========================================================
-   ANSWERS / PROGRESS
-   ========================================================= */
-function setAnswer(n, v){
-  answers[n] = v;
-  clearMark(n);
-  updateProgress();
-  saveStore();
-}
-function clearMark(n){
-  const el = answerBody.querySelector(`.q[data-n="${n}"]`);
-  if(!el) return;
-  el.classList.remove("correct","wrong");
-  const fb = el.querySelector(".q-feedback");
-  if(fb){ fb.className = "q-feedback"; fb.innerHTML = ""; }
-}
-function updateProgress(){
-  let done = 0;
-  currentTest.sections.forEach(sec=>sec.questions.forEach(q=>{
-    if((answers[q.n] || "").trim()) done++;
-  }));
-  progressEl.textContent = `${done} / ${totalQuestions()}`;
-}
+    let correct = 0, incorrect = 0, unanswered = 0;
+    S.questions.forEach((q, i) => {
+      const a = S.answers[i];
+      if (a === null) unanswered++;
+      else if (a === q.a) correct++;
+      else incorrect++;
+    });
+    const total = S.questions.length;
+    const score = total ? (correct / total) * 10 : 0;
+    const accuracy = total ? Math.round(100 * correct / total) : 0;
+    const level = score >= 9 ? 'Excellent'
+      : score >= 8 ? 'Very Good'
+      : score >= 6.5 ? 'Good'
+      : score >= 5 ? 'Satisfactory'
+      : 'Needs Improvement';
 
-/* =========================================================
-   EVENTS ON ANSWER SHEET
-   ========================================================= */
-answerBody.addEventListener("input", e=>{
-  const t = e.target;
-  if(t.classList.contains("txt")) setAnswer(t.dataset.n, t.value);
-});
+    const timeTaken = Math.max(1, Math.floor((Date.now() - S.startTime) / 1000));
+    const mm = Math.floor(timeTaken / 60), ss = timeTaken % 60;
+    const timeStr = mm + 'm ' + ss + 's';
 
-answerBody.addEventListener("change", e=>{
-  const t = e.target;
-  if(t.type === "radio" && t.name.startsWith("q")){
-    setAnswer(t.name.slice(1), t.value);
-  }
-  if(t.classList.contains("sel")){
-    setAnswer(t.dataset.n, t.value);
-  }
-});
-
-/* auto-switch reading passage when user interacts with a question */
-function focusQuestion(e){
-  const q = e.target.closest(".q");
-  if(!q) return;
-  const p = Number(q.dataset.passage);
-  if(!Number.isNaN(p) && p !== activePassage){
-    selectPassage(p);
-  }
-}
-answerBody.addEventListener("focusin", focusQuestion);
-answerBody.addEventListener("click", focusQuestion);
-
-/* =========================================================
-   GRADING
-   ========================================================= */
-function grade(silent){
-  let score = 0;
-  let total = 0;
-
-  currentTest.sections.forEach(sec=>{
-    sec.questions.forEach(q=>{
-      total++;
-      const raw = (answers[q.n] || "").trim();
-      let ok = false;
-      let correctText = "";
-
-      if(q.type === "mc"){
-        const idx = "ABCD".indexOf(q.answer);
-        correctText = `${q.answer} – ${q.options[idx]}`;
-        ok = raw === q.answer;
-      } else if(q.type === "select"){
-        const opt = q.options.find(o=>o.value === q.answer);
-        correctText = opt ? opt.label : q.answer;
-        ok = raw === q.answer;
+    /* Update topic stats + mistakes */
+    ensureTopicStats();
+    S.questions.forEach((q, i) => {
+      const st = data.topicStats[q.t];
+      st.attempted = (st.attempted || 0) + 1;
+      if (S.answers[i] === q.a) st.correct = (st.correct || 0) + 1;
+      else st.incorrect = (st.incorrect || 0) + 1;
+    });
+    S.questions.forEach((q, i) => {
+      if (S.answers[i] !== q.a) {
+        if (!data.mistakes.includes(q.id)) data.mistakes.push(q.id);
       } else {
-        correctText = q.answers[0];
-        const nr = norm(raw);
-        ok = !!nr && q.answers.some(a => norm(a) === nr);
+        data.mistakes = data.mistakes.filter(id => id !== q.id);
       }
+    });
 
-      if(ok) score++;
+    const resultObj = {
+      type: S.type,
+      topicId: S.topicId,
+      title: S.title,
+      total, correct, incorrect, unanswered,
+      score, accuracy, level, timeTaken: timeStr
+    };
 
-      const el = answerBody.querySelector(`.q[data-n="${q.n}"]`);
-      if(!el) return;
-      el.classList.toggle("correct", ok);
-      el.classList.toggle("wrong", !ok);
+    if (S.type === 'comprehensive') {
+      data.tests.push({
+        date: new Date().toLocaleDateString(),
+        total, correct, score, accuracy
+      });
+      data.lastTestIds = S.questions.map(q => q.id);
+    } else {
+      data.sessions.push({
+        date: new Date().toLocaleDateString(),
+        type: S.type,
+        topicId: S.topicId,
+        total, correct, score
+      });
+    }
+    save();
 
-      const fb = el.querySelector(".q-feedback");
-      fb.className = "q-feedback show";
-      if(ok){
-        fb.innerHTML = `✓ Correct` + (q.explain ? `<span class="explain">${q.explain}</span>` : "");
-      } else {
-        fb.innerHTML = `✗ Correct answer: <b>${correctText}</b>` +
-          (q.explain ? `<span class="explain">${q.explain}</span>` : "");
+    /* Snapshot session BEFORE navigating so Review always has it */
+    const savedSession = {
+      questions: S.questions,
+      answers: S.answers.slice()
+    };
+    S = null;
+    window.__lastSession = savedSession;
+    window.__lastResult = resultObj;
+    navigate('results', { result: resultObj, savedSession });
+  },
+
+  reviewCurrent: function () {
+    if (!window.__lastSession) return;
+    reviewFilter = 'all';                       // reset filter for each new review
+    navigate('review', { session: window.__lastSession });
+  },
+
+  backToResults: function () {
+    if (window.__lastResult) navigate('results', { result: window.__lastResult });
+    else navigate('dashboard');
+  },
+
+  setFilter: function (f) {
+    reviewFilter = f;
+    render();
+  },
+
+  reviewMistakesForTopic: function (topicId) {
+    const ids = new Set(data.mistakes.map(id => String(id)));
+    const qs = QS.filter(q => q.t === topicId && ids.has(String(q.id)));
+    if (!qs.length) return alert('No tracked mistakes for this topic yet.');
+    const prepared = prepare(qs);
+    validatePrepared(prepared);
+    S = {
+      type: 'mistakes',
+      topicId: topicId,
+      questions: prepared,
+      answers: new Array(prepared.length).fill(null),
+      current: 0,
+      startTime: Date.now(),
+      title: 'Mistake Practice — ' + TOPICS.find(t => t.id === topicId).name
+    };
+    navigate('practice');
+  },
+
+  exportData: function () {
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'na021-progress-' + new Date().toISOString().slice(0, 10) + '.json';
+    a.click();
+    URL.revokeObjectURL(url);
+  },
+
+  importData: function (input) {
+    const file = input.files && input.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      try {
+        const parsed = JSON.parse(e.target.result);
+        if (!confirm('Import will replace your current progress. Continue?')) return;
+        data = Object.assign({}, DEF, parsed);
+        save();
+        alert('Imported successfully.');
+        render();
+      } catch (err) {
+        alert('Invalid JSON file.');
       }
+    };
+    reader.readAsText(file);
+  },
+
+  clearTests: function () {
+    if (!confirm('Delete all test history? This cannot be undone.')) return;
+    data.tests = [];
+    save();
+    render();
+  },
+
+  resetAll: function () {
+    if (!confirm('Reset ALL learning progress? This cannot be undone.')) return;
+    if (!confirm('Are you absolutely sure?')) return;
+    data = Object.assign({}, DEF);
+    save();
+    S = null;
+    render();
+  }
+};
+
+/* =========================================================
+   COMPREHENSIVE TEST BUILDER (balanced, unique, avoids last attempt)
+   ========================================================= */
+function buildComprehensive() {
+  const TOTAL = 40;
+  if (QS.length < TOTAL) {
+    alert('Not enough questions in the bank (' + QS.length + ') to build a ' + TOTAL + '-question test.');
+    return [];
+  }
+  const lastIds = new Set((data.lastTestIds || []).map(id => String(id)));
+  const picked = [];
+  const usedIds = new Set();
+
+  /* Pass 1: 3 per topic = 36 */
+  shuffle(TOPICS.map(t => t.id)).forEach(tid => {
+    let pool = QS.filter(q => q.t === tid && !usedIds.has(String(q.id)));
+    /* Prefer non-last-test questions when there's enough variety */
+    const notLast = pool.filter(q => !lastIds.has(String(q.id)));
+    if (notLast.length >= 3) pool = notLast;
+    shuffle(pool).slice(0, 3).forEach(q => {
+      picked.push(q);
+      usedIds.add(String(q.id));
     });
   });
 
-  submitted = true;
-  saveStore();
-
-  const pct = Math.round(score / total * 100);
-  scoreBox.textContent = `Score: ${score}/${total} (${pct}%)`;
-  scoreBox.classList.add("show");
-
-  if(!silent){
-    answerBody.scrollTo({ top: 0, behavior: "smooth" });
+  /* Pass 2: top up to 40 from any topic */
+  if (picked.length < TOTAL) {
+    let pool = QS.filter(q => !usedIds.has(String(q.id)));
+    const notLast = pool.filter(q => !lastIds.has(String(q.id)));
+    if (notLast.length >= TOTAL - picked.length) pool = notLast;
+    shuffle(pool).slice(0, TOTAL - picked.length).forEach(q => {
+      picked.push(q);
+      usedIds.add(String(q.id));
+    });
   }
+
+  const prepared = prepare(picked);   // shuffle question order + option order
+  validatePrepared(prepared);
+  return prepared;
 }
 
 /* =========================================================
-   TEST LOADING
+   TIMER (comprehensive test)
    ========================================================= */
-function loadTest(id){
-  currentTest = TESTS.find(t => t.id === id) || TESTS[0];
-  testSelect.value = currentTest.id;
-
-  const saved = loadStore()[currentTest.id];
-  answers   = (saved && saved.answers) ? {...saved.answers} : {};
-  submitted = false;
-
-  activePassage = 0;
-  buildTabs();
-  renderReading();
-  renderAnswers();
-
-  elapsed = 0;
-  startTimer();
-
-  subtitleEl.textContent = `${currentTest.name} · 30 questions · 60 minutes`;
+function startTimer() {
+  if (timerId) clearInterval(timerId);
+  timerId = setInterval(function () {
+    if (!S || S.type !== 'comprehensive') {
+      clearInterval(timerId);
+      timerId = null;
+      return;
+    }
+    const remaining = Math.floor((S.endsAt - Date.now()) / 1000);
+    const el = document.getElementById('timer');
+    if (el && remaining >= 0) {
+      const m = Math.floor(remaining / 60);
+      const sec = remaining % 60;
+      el.textContent = '⏱ ' + String(m).padStart(2, '0') + ':' + String(sec).padStart(2, '0');
+      if (remaining < 300) el.classList.add('warn');
+    }
+    if (remaining <= 0) {
+      clearInterval(timerId);
+      timerId = null;
+      alert('Time is up. Your test will be submitted automatically.');
+      app.submit();
+    }
+  }, 1000);
 }
-
-/* =========================================================
-   BUTTONS
-   ========================================================= */
-testSelect.addEventListener("change", e => loadTest(e.target.value));
-
-submitBtn.addEventListener("click", ()=>{
-  const unanswered = totalQuestions() - Object.values(answers).filter(v => (v||"").trim()).length;
-  if(unanswered > 0){
-    const ok = confirm(`You still have ${unanswered} unanswered question(s). Submit anyway?`);
-    if(!ok) return;
-  }
-  grade(false);
-});
-
-resetBtn.addEventListener("click", ()=>{
-  if(!confirm("Clear all answers for this test?")) return;
-  answers = {};
-  submitted = false;
-  elapsed = 0;
-  saveStore();
-  renderAnswers();
-  renderTimer();
-  scoreBox.classList.remove("show");
-});
 
 /* =========================================================
    INIT
    ========================================================= */
-loadTest(TESTS[0].id);
+ensureTopicStats();
+render();
 </script>
 </body>
 </html>
